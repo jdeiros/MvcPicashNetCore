@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MvcPicashNetCore.Models;
 
 namespace MvcPicashNetCore
 {
@@ -33,6 +35,22 @@ namespace MvcPicashNetCore
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            /* agrego un nuevo servicio de base de datos a mi aplicacion
+             * mapeamos un EscuelaContext en un servicio
+             * con esto ya puedo agregar una base de datos en memoria, la llame testDB (es para pruebas)
+             *
+             */
+            services.AddDbContext<PicashDbContext>(
+                    options => options.UseInMemoryDatabase(databaseName: "testDB")
+                );
+           /* para trabajar con db *****************************************************
+            * 
+            string connString = ConfigurationExtensions.GetConnectionString(Configuration,"DefaultConnectionString");
+
+            services.AddDbContext<PicashDbContext>(options => options.UseSqlServer(connString));
+
+            /* para trabajar con db *********************************************************/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
