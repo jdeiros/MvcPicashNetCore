@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/04ed1f12-5c1f-4866-859f-54fa39e126d4/resourceGroups/picash/providers/Microsoft.Web/sites/picash",
+    "appService.deploySubpath": ""
+}
