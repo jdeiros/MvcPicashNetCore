@@ -10,6 +10,7 @@ namespace MvcPicashNetCore.Models
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public float TotalAmmount { get; set; }
+        public int InstalmentsAmount { get; set; }
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
         public List<Installment> Installments { get; set; }

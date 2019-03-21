@@ -47,7 +47,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: PaymentCommitments/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
             return View();
         }
 
@@ -65,6 +65,7 @@ namespace MvcPicashNetCore.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", paymentCommitment.CustomerId);
+            
             return View(paymentCommitment);
         }
 
@@ -81,7 +82,7 @@ namespace MvcPicashNetCore.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", paymentCommitment.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", paymentCommitment.CustomerId);
             return View(paymentCommitment);
         }
 
