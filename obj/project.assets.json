@@ -6256,7 +6256,7 @@
       ]
     },
     "Microsoft.EntityFrameworkCore.InMemory/2.2.3": {
-      "sha512": "Xeq3iCAOBHWN5r4LwSRFye9Sq07ylupTUoiOZa+rfOkQCgxZNm12kv0bpj/Juf3Kx2THJh7hqSFeeeyEvKDTfQ==",
+      "sha512": "KS/VBocwPWlv+wGCyyyPcpHIoQMRxnrE5qzyeR5YLsKDs/fU1MbuQ665M23s6UTmWaSH5YJUbHb8dn2NNMuqdQ==",
       "type": "package",
       "path": "microsoft.entityframeworkcore.inmemory/2.2.3",
       "files": [
@@ -6503,7 +6503,7 @@
       ]
     },
     "Microsoft.Extensions.DependencyInjection/2.2.0": {
-      "sha512": "ASF77AJjnyi9hL7IJU1KCAvnCTgI3JEwkU+D4gnKd53nFIYpibVjR6SW8tdTkkuZ+QkmIx2rPvKdTMNVPfVU9A==",
+      "sha512": "MZtBIwfDFork5vfjpJdG5g8wuJFt7d/y3LOSVVtDK/76wlbtz6cjltfKHqLx2TKVqTj5/c41t77m1+h20zqtPA==",
       "type": "package",
       "path": "microsoft.extensions.dependencyinjection/2.2.0",
       "files": [
@@ -6520,7 +6520,7 @@
       ]
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/2.2.0": {
-      "sha512": "2xMk9LHz1EY+7gVG0lG4qBvkUiVjg8QNPqd2HYmEP5+PL7Ayo96EhBieAhd++Gx4yM+xN8kNqmhZdFMBHeG0HQ==",
+      "sha512": "f9hstgjVmr6rmrfGSpfsVOl2irKAgr1QjrSi3FgnS7kulxband50f2brRLwySAQTADPZeTdow0mpSMcoAdadCw==",
       "type": "package",
       "path": "microsoft.extensions.dependencyinjection.abstractions/2.2.0",
       "files": [
@@ -12953,23 +12953,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jdeiros\\.nuget\\packages\\": {},
+    "C:\\Users\\JDeiros\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\gitHubRepos\\MvcPicashNetCore\\MvcPicashNetCore.csproj",
+      "projectUniqueName": "D:\\Projects\\MvcPicashNetCore\\MvcPicashNetCore.csproj",
       "projectName": "MvcPicashNetCore",
-      "projectPath": "D:\\gitHubRepos\\MvcPicashNetCore\\MvcPicashNetCore.csproj",
-      "packagesPath": "C:\\Users\\jdeiros\\.nuget\\packages\\",
-      "outputPath": "D:\\gitHubRepos\\MvcPicashNetCore\\obj\\",
+      "projectPath": "D:\\Projects\\MvcPicashNetCore\\MvcPicashNetCore.csproj",
+      "packagesPath": "C:\\Users\\JDeiros\\.nuget\\packages\\",
+      "outputPath": "D:\\Projects\\MvcPicashNetCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\jdeiros\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\JDeiros\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
