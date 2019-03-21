@@ -56,8 +56,12 @@ namespace MvcPicashNetCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaymentCommitmentId,CreationDate,DateFrom,DateTo,TotalAmmount,CustomerId,PaymentcommitmentStatus")] PaymentCommitment paymentCommitment)
+        public async Task<IActionResult> Create([Bind("PaymentCommitmentId,CreationDate,DateFrom,DateTo,TotalAmmount,InstalmentsAmount,CustomerId,PaymentcommitmentStatus")] PaymentCommitment paymentCommitment)
         {
+            paymentCommitment.CreationDate = DateTime.Today;
+            paymentCommitment.DateFrom = DateTime.Today;
+            paymentCommitment.DateTo = DateTime.Today.AddDays(paymentCommitment.InstalmentsAmount);
+            
             if (ModelState.IsValid)
             {
                 _context.Add(paymentCommitment);

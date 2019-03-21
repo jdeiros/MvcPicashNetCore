@@ -1,32 +1,21 @@
 @model MvcPicashNetCore.Models.PaymentCommitment
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear";
 }
 
-<h1>Create</h1>
 
-<h4>PaymentCommitment</h4>
+            <legend>Crear Préstamo</legend>
+
 <hr />
+
 <div class="row">
+    
     <div class="col-md-4">
+        
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control"  value="@DateTime.Today"/>
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateFrom" class="control-label"></label>
-                <input asp-for="DateFrom" class="form-control" />
-                <span asp-validation-for="DateFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateTo" class="control-label"></label>
-                <input asp-for="DateTo" class="form-control" />
-                <span asp-validation-for="DateTo" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <label asp-for="TotalAmmount" class="control-label"></label>
                 <input asp-for="TotalAmmount" class="form-control" />
@@ -54,10 +43,22 @@
             </div>
             
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                
+                <!-- <input type="submit" value="Crear Prestamo" class="btn btn-primary" /> -->
+                <input type="submit" value="Crear Calendario" class="btn btn-outline-warning" />
+
             </div>
+
         </form>
+        
     </div>
+
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+        ACA VA LA PARTE DE SIMULAR EL CALENDARIO DE PAGOS CON EL DETALLE DE CADA CUOTA
+        </div>
+    </div>
+
 </div>
 
 <div>

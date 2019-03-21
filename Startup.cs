@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,12 +27,12 @@ namespace MvcPicashNetCore
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.None;                
             });
 
 
@@ -39,15 +41,13 @@ namespace MvcPicashNetCore
             /* agrego un nuevo servicio de base de datos a mi aplicacion
              * mapeamos un EscuelaContext en un servicio
              * con esto ya puedo agregar una base de datos en memoria, la llame testDB (es para pruebas)
-             *
              */
-            services.AddDbContext<PicashDbContext>(
-                    options => options.UseInMemoryDatabase(databaseName: "testDB")
-                );
-           /* para trabajar con db *****************************************************
-            * 
-            string connString = ConfigurationExtensions.GetConnectionString(Configuration,"DefaultConnectionString");
+            
+            services.AddDbContext<PicashDbContext>(options => options.UseInMemoryDatabase(databaseName: "testDB"));
 
+           /* para trabajar con db *****************************************************
+            
+            string connString = ConfigurationExtensions.GetConnectionString(Configuration,"DefaultConnectionString");
             services.AddDbContext<PicashDbContext>(options => options.UseSqlServer(connString));
 
             /* para trabajar con db *********************************************************/
@@ -77,6 +77,12 @@ namespace MvcPicashNetCore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            var cultureInfo = new CultureInfo("en-US");
+            cultureInfo.NumberFormat.CurrencySymbol = "$";
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
 }
