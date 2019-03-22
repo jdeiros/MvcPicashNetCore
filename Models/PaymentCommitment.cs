@@ -22,6 +22,11 @@ namespace MvcPicashNetCore.Models
         [Display(Prompt ="Monto Total", Name = "Monto Total")]
         [Required(ErrorMessage = "El monto total es requerido")]
         public float TotalAmmount { get; set; }
+        
+        [Display(Prompt ="Interés Total", Name = "Interés Total")]
+        [Required(ErrorMessage = "El Interés puede ser entre 0-100 %")]
+        [Range(0, 100)]
+        public int InterestPercentage { get; set; }
 
         [Display(Prompt ="Cantidad de Cuotas", Name = "Cantidad de Cuotas")]
         [Required(ErrorMessage = "Debe completar la cantidad de cuotas.")]

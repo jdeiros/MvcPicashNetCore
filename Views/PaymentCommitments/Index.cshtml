@@ -25,6 +25,12 @@
                 @Html.DisplayNameFor(model => model.TotalAmmount)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.InterestPercentage)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.InstalmentsAmount)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Customer)
             </th>
             <th>
@@ -47,6 +53,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalAmmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterestPercentage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstalmentsAmount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.Name)
