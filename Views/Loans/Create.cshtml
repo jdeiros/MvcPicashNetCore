@@ -1,4 +1,4 @@
-@model MvcPicashNetCore.Models.PaymentCommitment
+@model MvcPicashNetCore.Models.Loan
 
 @{
     ViewData["Title"] = "Crear";
@@ -38,9 +38,9 @@
             
             
             <div class="form-group">
-                <label asp-for="PaymentcommitmentStatus" class="control-label"></label>
+                <label asp-for="LoanStatus" class="control-label"></label>
                 @Html.DropDownList(
-                    "PaymentCommitmentStatus", @Html.GetEnumSelectList<PaymentcommitmentStatus>(),
+                    "LoanStatus", @Html.GetEnumSelectList<LoanStatus>(),
                         "Seleccione estado",
                         new {@class = "form-control"}
                 )
@@ -49,9 +49,9 @@
             
             <div class="form-group">
                 
-                <!-- <input type="submit" value="Crear Prestamo" class="btn btn-primary" /> -->
+                <input type="submit" value="Crear Prestamo" class="btn btn-primary" />
                 <input type="submit" value="Crear Calendario" class="btn btn-outline-warning" />
-
+                
             </div>
 
         </form>
@@ -60,7 +60,21 @@
 
     <div class="col-md-8">
         <div class="panel panel-primary">
-        ACA VA LA PARTE DE SIMULAR EL CALENDARIO DE PAGOS CON EL DETALLE DE CADA CUOTA
+
+            @{
+                foreach(var cutoa in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas)
+                {
+                    <div>
+                        <span> 
+                            Nro.: @cutoa.InstallmentNumber 
+                            Status: @cutoa.InstallmentStatus
+                            Monto: @cutoa.Amount
+                            Vencimiento: @cutoa.Duedate.ToString("dd/MM/yyyy");
+                        </span>
+                    </div>
+                }
+            }
+        
         </div>
     </div>
 

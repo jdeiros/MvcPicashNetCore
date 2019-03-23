@@ -12,7 +12,7 @@ namespace MvcPicashNetCore.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<DebtCollector> DebtCollectors { get; set; }
         public DbSet<Installment> Installments { get; set; }
-        public DbSet<PaymentCommitment> PaymentCommitments { get; set; }
+        public DbSet<Loan> Loans { get; set; }
         public DbSet<Route> Routes { get; set; }
 
         public PicashDbContext(DbContextOptions<PicashDbContext> options): base(options)

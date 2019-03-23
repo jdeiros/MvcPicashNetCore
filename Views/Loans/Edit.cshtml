@@ -1,4 +1,4 @@
-@model MvcPicashNetCore.Models.PaymentCommitment
+@model MvcPicashNetCore.Models.Loan
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,13 +6,13 @@
 
 <h1>Edit</h1>
 
-<h4>PaymentCommitment</h4>
+<h4>Loan</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PaymentCommitmentId" />
+            <input type="hidden" asp-for="LoanId" />
             <div class="form-group">
                 <label asp-for="CreationDate" class="control-label"></label>
                 <input asp-for="CreationDate" class="form-control" />
@@ -39,9 +39,9 @@
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PaymentcommitmentStatus" class="control-label"></label>
+                <label asp-for="LoanStatus" class="control-label"></label>
                 @Html.DropDownList(
-                    "PaymentCommitmentStatus", @Html.GetEnumSelectList<PaymentcommitmentStatus>(),
+                    "LoanStatus", @Html.GetEnumSelectList<LoanStatus>(),
                         "Seleccione estado",
                         new {@class = "form-control"}
                 )

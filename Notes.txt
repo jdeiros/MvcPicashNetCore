@@ -56,8 +56,8 @@ dotnet aspnet-codegenerator controller `
 --referenceScriptLibraries -f
 -------------------------------------------------------------------------
  dotnet aspnet-codegenerator controller `
- -name PaymentCommitmentsController `
- -m PaymentCommitment `
+ -name LoansController `
+ -m Loan `
  -dc PicashDbContext `
 --relativeFolderPath Controllers `
 --useDefaultLayout `

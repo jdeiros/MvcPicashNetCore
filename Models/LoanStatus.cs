@@ -2,7 +2,7 @@ using System;
 
 namespace MvcPicashNetCore.Models
 {
-    public enum PaymentcommitmentStatus
+    public enum LoanStatus
     {
         Created,
         Canceled,

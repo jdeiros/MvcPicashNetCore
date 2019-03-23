@@ -78,7 +78,7 @@ namespace MvcPicashNetCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var cultureInfo = new CultureInfo("en-US");
+            var cultureInfo = new CultureInfo("es-AR");
             cultureInfo.NumberFormat.CurrencySymbol = "$";
 
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

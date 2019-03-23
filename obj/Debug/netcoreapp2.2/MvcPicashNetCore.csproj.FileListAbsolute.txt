@@ -86,11 +86,6 @@ d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\DebtCollectors\
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\DebtCollectors\Index.g.cshtml.cs
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.g.cshtml.cs
-d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\PaymentCommitments\Create.g.cshtml.cs
-d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\PaymentCommitments\Delete.g.cshtml.cs
-d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\PaymentCommitments\Details.g.cshtml.cs
-d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\PaymentCommitments\Edit.g.cshtml.cs
-d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\PaymentCommitments\Index.g.cshtml.cs
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Routes\Create.g.cshtml.cs
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Routes\Delete.g.cshtml.cs
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Routes\Details.g.cshtml.cs
@@ -108,3 +103,8 @@ d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\MvcPicashNetCore.Views.pdb
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\MvcPicashNetCore.dll
 d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\MvcPicashNetCore.pdb
 D:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\MvcPicashNetCore.csproj.CopyComplete
+d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Loans\Create.g.cshtml.cs
+d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Loans\Delete.g.cshtml.cs
+d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Loans\Details.g.cshtml.cs
+d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Loans\Edit.g.cshtml.cs
+d:\Projects\MvcPicashNetCore\obj\Debug\netcoreapp2.2\Razor\Views\Loans\Index.g.cshtml.cs

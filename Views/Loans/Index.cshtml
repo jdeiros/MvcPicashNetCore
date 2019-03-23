@@ -1,4 +1,4 @@
-@model IEnumerable<MvcPicashNetCore.Models.PaymentCommitment>
+@model IEnumerable<MvcPicashNetCore.Models.Loan>
 
 @{
     ViewData["Title"] = "Index";
@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Customer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentcommitmentStatus)
+                @Html.DisplayNameFor(model => model.LoanStatus)
             </th>
             <th></th>
         </tr>
@@ -64,12 +64,12 @@
                 @Html.DisplayFor(modelItem => item.Customer.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaymentcommitmentStatus)
+                @Html.DisplayFor(modelItem => item.LoanStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PaymentCommitmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PaymentCommitmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PaymentCommitmentId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.LoanId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LoanId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanId">Delete</a>
             </td>
         </tr>
 }
