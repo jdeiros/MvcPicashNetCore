@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label asp-for="LoanStatus" class="control-label"></label>
                 @Html.DropDownList(
-                    "LoanStatus", @Html.GetEnumSelectList<LoanStatus>(),
+                    "LoanStatus", @Html.GetEnumSelectList<MvcPicashNetCore.Models.LoanStatus>(),
                         "Seleccione estado",
                         new {@class = "form-control"}
                 )
@@ -62,18 +62,22 @@
         <div class="panel panel-primary">
 
             @{
-                foreach(var cutoa in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas)
-                {
-                    <div>
-                        <span> 
-                            Nro.: @cutoa.InstallmentNumber 
-                            Status: @cutoa.InstallmentStatus
-                            Monto: @cutoa.Amount
-                            Vencimiento: @cutoa.Duedate.ToString("dd/MM/yyyy");
-                        </span>
-                    </div>
+                if(ViewBag.MensajeCuotas != null)  
+                {          
+                    foreach(var cutoa in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas)
+                    {
+                        <div>
+                            <span> 
+                                Nro.: @cutoa.InstallmentNumber 
+                                Status: @cutoa.InstallmentStatus
+                                Monto: @cutoa.Amount
+                                Vencimiento: @cutoa.Duedate.ToString("dd/MM/yyyy");
+                            </span>
+                        </div>
+                    }
                 }
             }
+           
         
         </div>
     </div>

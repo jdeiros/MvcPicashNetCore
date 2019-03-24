@@ -48,7 +48,7 @@ namespace MvcPicashNetCore.Controllers
 
         // GET: Loans/Create
         public IActionResult Create()
-        {
+        {            
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
             return View();
         }
@@ -63,10 +63,7 @@ namespace MvcPicashNetCore.Controllers
             Loan.CreationDate = DateTime.Today;
             Loan.DateFrom = DateTime.Today;
             Loan.DateTo = DateTime.Today.AddDays(Loan.InstalmentsAmount);
-            
-            
-
-
+                    
             if (ModelState.IsValid)
             {
                 /************* */
