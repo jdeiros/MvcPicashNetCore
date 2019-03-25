@@ -37,7 +37,7 @@
             </div>
             
             
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label asp-for="LoanStatus" class="control-label"></label>
                 @Html.DropDownList(
                     "LoanStatus", @Html.GetEnumSelectList<MvcPicashNetCore.Models.LoanStatus>(),
@@ -45,43 +45,129 @@
                         new {@class = "form-control"}
                 )
 
-            </div>
+            </div> -->
             
             <div class="form-group">
-                
                 <input type="submit" value="Crear Prestamo" class="btn btn-primary" />
-                <input type="submit" value="Crear Calendario" class="btn btn-outline-warning" />
-                
+                @Html.ActionLink("Simular Amortización", "Loans", "Edit", null, new {miAtributo ="Valor1", @class = "btn btn-danger"})
             </div>
 
         </form>
         
     </div>
 
-    <div class="col-md-8">
-        <div class="panel panel-primary">
-
-            @{
-                if(ViewBag.MensajeCuotas != null)  
-                {          
-                    foreach(var cutoa in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas)
-                    {
-                        <div>
-                            <span> 
-                                Nro.: @cutoa.InstallmentNumber 
-                                Status: @cutoa.InstallmentStatus
-                                Monto: @cutoa.Amount
-                                Vencimiento: @cutoa.Duedate.ToString("dd/MM/yyyy");
-                            </span>
-                        </div>
-                    }
-                }
-            }
-           
-        
+        <div class="col-md-8">
+            <div class="container">
+                <div class="jumbotron">
+                    
+                    <div>
+                        <h3>Datos del Préstamo</h3>
+                        <hr />
+                        <dl class="row">
+                            <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.CreationDate)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.CreationDate)
+                            </dd>
+                            <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.LoanStatus)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.LoanStatus)
+                            </dd>
+                            <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.DateFrom)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.DateFrom)
+                            </dd>  
+                            <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.DateTo)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.DateTo)
+                            </dd>                            
+                             <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.TotalAmmount)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.TotalAmmount)
+                            </dd>  
+                             <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.Customer.Name)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.Customer.Name)
+                            </dd>  
+                             <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.InterestPercentage)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.InterestPercentage)
+                            </dd>                         
+                        </dl>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        
+        <div class="col-md-12">
+            <div class="container">
+                <div class="jumbotron">
+                    <div>
+                        <h3>Tabla de amortización</h3>
+                        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Cuota Nro.:
+                                    </th>
+                                    <th>
+                                        Estado de la cuota:
+                                    </th>
+                                    <th>
+                                        Monto a pagar: 
+                                    </th>
+                                    <th>
+                                        Fecha de vencimiento:
+                                    </th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @{
+                                if(ViewBag.MensajeCuotas != null)  
+                                {  
+                                    @foreach (var item in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas) 
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.InstallmentNumber
+                                            </td>
+                                            <td>
+                                                @item.InstallmentStatus
+                                            </td>
+                                            <td>
+                                                @String.Format("{0:C}", @item.Amount)
+                                            </td>
+                                            <td>
+                                                @item.Duedate.ToString("dd/MM/yyyy")
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        
+    
 </div>
 
 <div>
