@@ -63,7 +63,8 @@ namespace MvcPicashNetCore.Controllers
             Loan.CreationDate = DateTime.Today;
             Loan.DateFrom = DateTime.Today;
             Loan.DateTo = DateTime.Today.AddDays(Loan.InstalmentsAmount);
-                    
+            Loan.LoanStatus = LoanStatus.Created;
+            
             if (ModelState.IsValid)
             {
                 /************* */
@@ -87,7 +88,7 @@ namespace MvcPicashNetCore.Controllers
             
             return View(Loan);
         }
-
+         
         private static List<Installment> SimulateCalendar(Loan Loan)
         {
             /************ aca creo las cuotas para este acuerdo (simulacion debería ser) */
