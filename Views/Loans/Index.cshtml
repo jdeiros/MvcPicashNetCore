@@ -25,13 +25,13 @@
                 @Html.DisplayNameFor(model => model.TotalAmmount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InterestPercentage)
+                @Html.DisplayNameFor(model => model.LoanType.InterestPercentage)
             </th>
              <th>
-                @Html.DisplayNameFor(model => model.InstalmentsAmount)
+                @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.Customer.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LoanStatus)
@@ -55,10 +55,10 @@
                 @Html.DisplayFor(modelItem => item.TotalAmmount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InterestPercentage)
+                @Html.DisplayFor(modelItem => item.LoanType.InterestPercentage)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InstalmentsAmount)
+                @Html.DisplayFor(modelItem => item.LoanType.InstallmentsAmount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.Name)

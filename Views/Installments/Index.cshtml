@@ -1,0 +1,59 @@
+@model IEnumerable<MvcPicashNetCore.Models.Installment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InstallmentNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duedate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InstallmentStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.LoanId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstallmentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duedate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstallmentStatus)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InstallmentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InstallmentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InstallmentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

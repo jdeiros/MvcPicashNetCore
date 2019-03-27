@@ -9,12 +9,20 @@ namespace MvcPicashNetCore.Models
        public string InstallmentId { get; set; }
         public string LoanId { get; set; }
         public Loan Loan { get; set; }
+        
+        [DataType(DataType.Currency)]
+        [Display(Prompt ="Monto Total", Name = "Monto Total")]
         public float Amount { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        
         public int InstallmentNumber { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Duedate { get; set; }
         public InstallmentStatus InstallmentStatus { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Display(Prompt ="Monto de pago", Name = "Monto de pago")]
+        public float PaymentAmount { get; set; }
         public Installment()
         {
         }

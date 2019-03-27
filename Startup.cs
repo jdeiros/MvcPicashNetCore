@@ -41,11 +41,11 @@ namespace MvcPicashNetCore
             /* agrego un nuevo servicio de base de datos a mi aplicacion
              * mapeamos un EscuelaContext en un servicio
              * con esto ya puedo agregar una base de datos en memoria, la llame testDB (es para pruebas)
-             */
+             *
             
             services.AddDbContext<PicashDbContext>(options => options.UseInMemoryDatabase(databaseName: "testDB"));
 
-           /* para trabajar con db *****************************************************
+           /* para trabajar con db *****************************************************/
             
             string connString = ConfigurationExtensions.GetConnectionString(Configuration,"DefaultConnectionString");
             services.AddDbContext<PicashDbContext>(options => options.UseSqlServer(connString));
