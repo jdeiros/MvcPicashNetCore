@@ -25,16 +25,7 @@ namespace MvcPicashNetCore.Models
         [Display(Prompt ="Monto Total", Name = "Monto Total")]
         [Required(ErrorMessage = "El monto total es requerido")]
         public float TotalAmmount { get; set; }
-        
-        [Display(Prompt ="Interés Total (%)", Name = "Interés Total (%)")]
-        [Required(ErrorMessage = "El Interés puede ser entre 0-100 %")]
-        [Range(0, 100)]
-        public int InterestPercentage { get; set; }
-
-        [Display(Prompt ="Cantidad de Cuotas", Name = "Cantidad de Cuotas")]
-        [Required(ErrorMessage = "Debe completar la cantidad de cuotas.")]
-        public int InstalmentsAmount { get; set; }
-        
+                            
         [Display(Prompt ="Cliente", Name = "Cliente")]
          [Required(ErrorMessage = "Seleccione el cliente.")]
         public string CustomerId { get; set; }
@@ -47,6 +38,10 @@ namespace MvcPicashNetCore.Models
 
         [Display(Prompt ="Estado del Préstamo", Name = "Estado del Préstamo")]
         public LoanStatus LoanStatus { get; set; }
+
+        public string LoanTypeId { get; set; }
+
+        public LoanType LoanType { get; set; }
 
         public Loan()
         {

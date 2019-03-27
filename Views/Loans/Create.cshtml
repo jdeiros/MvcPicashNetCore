@@ -12,7 +12,7 @@
 <div class="row">
     
     <div class="col-md-4">
-        
+
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            
@@ -21,22 +21,17 @@
                 <input asp-for="TotalAmmount" class="form-control" />
                 <span asp-validation-for="TotalAmmount" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="InterestPercentage" class="control-label"></label>
-                <input asp-for="InterestPercentage" class="form-control" />
-                <span asp-validation-for="InterestPercentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InstalmentsAmount" class="control-label"></label>
-                <input asp-for="InstalmentsAmount" class="form-control" />
-                <span asp-validation-for="InstalmentsAmount" class="text-danger"></span>
-            </div>
+            
+            
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
             
-            
+            <div class="form-group">
+                <label asp-for="LoanTypeId" class="control-label"></label>
+                <select asp-for="LoanTypeId" class ="form-control" asp-items="ViewBag.LoanTypeId"></select>
+            </div>
             <!-- <div class="form-group">
                 <label asp-for="LoanStatus" class="control-label"></label>
                 @Html.DropDownList(
@@ -48,8 +43,10 @@
             </div> -->
             
             <div class="form-group">
-                <input type="submit" value="Crear Prestamo" class="btn btn-primary" />
-                @Html.ActionLink("Simular Amortización", "Loans", "Edit", null, new {miAtributo ="Valor1", @class = "btn btn-danger"})
+                <a class="btn btn-warning" asp-action="Simulation">Volver al Simulador</a>
+                <input type="submit" value="Crear Prestamo" class="btn btn-danger" />
+                <!-- @Html.ActionLink("Simulador", "Loans", "Simulation", null, new {miAtributo ="Valor1", @class = "btn btn-danger"}) -->
+                
             </div>
 
         </form>
@@ -94,6 +91,16 @@
                             <dd class = "col-sm-8">
                                 @Html.DisplayFor(model => model.TotalAmmount)
                             </dd>  
+                            
+                            <dt class = "col-sm-4">
+                                
+                                Monto total a cobrar: 
+                            </dt>
+                            <dd class = "col-sm-8">
+                                
+                                @Html.Display("@model => model.TotalAmmount", null, "A Cobrar", null)
+                            </dd> 
+
                              <dt class = "col-sm-4">
                                 @Html.DisplayNameFor(model => model.Customer.Name)
                             </dt>
@@ -101,10 +108,10 @@
                                 @Html.DisplayFor(model => model.Customer.Name)
                             </dd>  
                              <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.InterestPercentage)
+                                @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
                             </dt>
                             <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.InterestPercentage)
+                                @Html.DisplayFor(model => model.LoanType.InterestPercentage)
                             </dd>                         
                         </dl>
                     </div>

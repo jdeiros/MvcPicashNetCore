@@ -13,6 +13,7 @@ namespace MvcPicashNetCore.Models
         public DbSet<DebtCollector> DebtCollectors { get; set; }
         public DbSet<Installment> Installments { get; set; }
         public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanType> LoanTypes { get; set; }
         public DbSet<Route> Routes { get; set; }
 
         public PicashDbContext(DbContextOptions<PicashDbContext> options): base(options)
@@ -33,6 +34,24 @@ namespace MvcPicashNetCore.Models
                 OptionalContact = "juanperez@perezcompany.com"
             };
 
+            List<LoanType> loanTypes = new List<LoanType>();
+             loanTypes.Add(
+                new LoanType(){
+                    LoanTypeId = Guid.NewGuid().ToString(),
+                    Code = "26",
+                    Description = "Lista 26",
+                    InstallmentsAmount = 26,
+                    InterestPercentage = 40
+                });
+            loanTypes.Add(
+                new LoanType(){
+                    LoanTypeId = Guid.NewGuid().ToString(),
+                    Code = "20",
+                    Description = "Lista 20",
+                    InstallmentsAmount = 20,
+                    InterestPercentage = 30
+                });
+
             var route = new Route() {RouteId = Guid.NewGuid().ToString(), DebtCollectorId = debtCollector.DebtCollectorId, Code = "RAM"};
             List<Customer> customers = GenerateRandomCustomers(route, 50);
             List<Address> addresses = LoadAddresses(customers);
@@ -41,11 +60,12 @@ namespace MvcPicashNetCore.Models
             modelBuilder.Entity<Route>().HasData(route);
             modelBuilder.Entity<Customer>().HasData(customers.ToArray());
             modelBuilder.Entity<Address>().HasData(addresses.ToArray());
+            modelBuilder.Entity<LoanType>().HasData(loanTypes.ToArray());
         }
 
         private List<Address> LoadAddresses(List<Customer> customers)
         {
-             string[] street = { "Rosales", "Agulleiro", "Beiro", "Cuenca", "Virasoro", "M. T. de Alvear", "Bianco" };
+            string[] street = { "Rosales", "Agulleiro", "Beiro", "Cuenca", "Virasoro", "M. T. de Alvear", "Bianco" };
             string[] number = { "1243", "666", "895", "397", "1236", "1789", "2765" };
 
             Random rnd = new Random();

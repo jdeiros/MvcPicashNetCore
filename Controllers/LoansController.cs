@@ -48,54 +48,72 @@ namespace MvcPicashNetCore.Controllers
 
         // GET: Loans/Create
         public IActionResult Create()
-        {            
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
+        {
+            LoadCombos();
             return View();
         }
+
+       
 
         // POST: Loans/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LoanId,CreationDate,DateFrom,DateTo,TotalAmmount,InterestPercentage,InstalmentsAmount,CustomerId,LoanStatus")] Loan Loan)
+        public async Task<IActionResult> Create([Bind("LoanId,CreationDate,DateFrom,DateTo,TotalAmmount,LoanTypeId,CustomerId,LoanStatus")] Loan Loan)
         {
             Loan.CreationDate = DateTime.Today;
             Loan.DateFrom = DateTime.Today;
-            Loan.DateTo = DateTime.Today.AddDays(Loan.InstalmentsAmount);
+            //TODO: Cargar LoanType con LoanTypeId
+            Loan.LoanType = _context.LoanTypes.Where(l => l.LoanTypeId == Loan.LoanTypeId).FirstOrDefault();
+            Loan.DateTo = DateTime.Today.AddDays(Loan.LoanType.InstallmentsAmount);
             Loan.LoanStatus = LoanStatus.Created;
-            
+
             if (ModelState.IsValid)
             {
-                /************* */
-                List<Installment> completeListOfInstallments = SimulateCalendar(Loan);
-                ViewBag.MensajeCuotas = completeListOfInstallments;
-                /************* */
-
-
+                //primero guardo el prestamo para tener el id que luego se va a colocar a las cuotas
                 _context.Add(Loan);
                 await _context.SaveChangesAsync();
 
-                
+                //ahora creo las cuotas y le va a mandar el id de loan
+                List<Installment> completeListOfInstallments = SimulateAmortization(Loan);
+                ViewBag.MensajeCuotas = completeListOfInstallments;
+                foreach(Installment inst in completeListOfInstallments)
+                {
+                    _context.Add(inst);
+                    await _context.SaveChangesAsync();
+                }
+
                 /****************** */
-                ViewBag.CustomerId = new SelectList(_context.Customers, "CustomerId", "Name", Loan.CustomerId);
+                LoadCombos(Loan);
+
                 return View(Loan);
                 /********************* */
 
-                //return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", Loan.CustomerId);
-            
+            LoadCombos(Loan);
+
             return View(Loan);
         }
-         
-        private static List<Installment> SimulateCalendar(Loan Loan)
+
+        private void LoadCombos(Loan Loan)
+        {
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Description");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", Loan.CustomerId);
+        }
+         private void LoadCombos()
+        {
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Description");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
+        }
+        private static List<Installment> SimulateAmortization(Loan Loan)
         {
             /************ aca creo las cuotas para este acuerdo (simulacion debería ser) */
             List<Installment> completeListOfInstallments = new List<Installment>();
-            
-            float installmentTotalAmount = (Loan.TotalAmmount + Loan.TotalAmmount * Loan.InterestPercentage / 100) / Loan.InstalmentsAmount;
-            for (int i = 1; i <= Loan.InstalmentsAmount; i++)
+           
+            float installmentTotalAmount = (Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100) / Loan.LoanType.InstallmentsAmount;
+            for (int i = 1; i <= Loan.LoanType.InstallmentsAmount; i++)
             {
                 completeListOfInstallments.Add(
                             new Installment()
@@ -105,6 +123,7 @@ namespace MvcPicashNetCore.Controllers
                                 InstallmentStatus = InstallmentStatus.Pending,
                                 LoanId = Loan.LoanId,
                                 Amount = installmentTotalAmount,
+                                PaymentAmount = 0,
                                 Duedate = DateTime.Today.AddDays(i)
                             });
             }

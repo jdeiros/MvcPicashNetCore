@@ -1,3 +1,24 @@
+# Build results
+[Dd]ebug/**
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/**
+[Oo]bj/**
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+netcoreapp2.2/
+obj/**
+obj/Debug/**
+# Visual Studio 2015
+.vs/
+
 *.swp
 *.*~
 project.lock.json
@@ -17,21 +38,6 @@ nupkg/
 *.userosscache
 *.sln.docstates
 
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-[Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
-
-# Visual Studio 2015
-.vs/
+obj/Debug/netcoreapp2.2/MvcPicashNetCore.assets.cache
+*.dll
+*.pbd
