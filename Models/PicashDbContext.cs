@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MvcPicashNetCore.Models;
 
 namespace MvcPicashNetCore.Models
 {
@@ -15,6 +16,7 @@ namespace MvcPicashNetCore.Models
         public DbSet<Loan> Loans { get; set; }
         public DbSet<LoanType> LoanTypes { get; set; }
         public DbSet<Route> Routes { get; set; }
+        public DbSet<CollectionWeek> CollectionWeeks { get; set; }
 
         public PicashDbContext(DbContextOptions<PicashDbContext> options): base(options)
         {
@@ -56,6 +58,15 @@ namespace MvcPicashNetCore.Models
             List<Customer> customers = GenerateRandomCustomers(route, 50);
             List<Address> addresses = LoadAddresses(customers);
 
+            var collectionWeek = new CollectionWeek() {
+                CollectionWeekId = Guid.NewGuid().ToString(),
+                Code = "LuSa",
+                Description = "Lunes a Sabados, sin feriados",
+                Monday = true, Tuesday = true, Wednesday = true, Thursday = true, Friday = true, Saturday = true,
+                Sunday = false, Holiday = false
+            };
+
+            modelBuilder.Entity<CollectionWeek>().HasData(collectionWeek);
             modelBuilder.Entity<DebtCollector>().HasData(debtCollector);
             modelBuilder.Entity<Route>().HasData(route);
             modelBuilder.Entity<Customer>().HasData(customers.ToArray());
@@ -108,6 +119,8 @@ namespace MvcPicashNetCore.Models
 
             return customerList.OrderBy((cus) => cus.CustomerId).Take(cant).ToList();
         }
+
+        public DbSet<MvcPicashNetCore.Models.CollectionWeek> CollectionWeek { get; set; }
 
     }
 }
