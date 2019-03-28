@@ -65,6 +65,7 @@ namespace MvcPicashNetCore.Controllers
             Loan.CreationDate = DateTime.Today;
             Loan.DateFrom = DateTime.Today;
             //TODO: Cargar LoanType con LoanTypeId
+            
             Loan.LoanType = _context.LoanTypes.Where(l => l.LoanTypeId == Loan.LoanTypeId).FirstOrDefault();
             Loan.DateTo = DateTime.Today.AddDays(Loan.LoanType.InstallmentsAmount);
             Loan.LoanStatus = LoanStatus.Created;

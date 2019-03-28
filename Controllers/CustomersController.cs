@@ -18,11 +18,27 @@ namespace MvcPicashNetCore.Controllers
             _context = context;
         }
 
-        // GET: Customers
-        public async Task<IActionResult> Index()
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
         {
-            var picashDbContext = _context.Customers.Include(c => c.Route);
-            return View(await picashDbContext.ToListAsync());
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+        // GET: Customers
+        public async Task<IActionResult> Index(string searchString)
+        {
+            //(from c in _context.Customers select c) es una consulta LinQ
+            var customers = from c in _context.Customers select c;
+
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                //s => s.Name.Contains(searchString) es una expresion Lambda
+                customers = customers.Where(s => s.Name.Contains(searchString)); 
+            }
+
+            return View(await customers.ToListAsync());
+
+            // var picashDbContext = _context.Customers.Include(c => c.Route);
+            // return View(await picashDbContext.ToListAsync());
         }
 
         // GET: Customers/Details/5
