@@ -21,7 +21,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: CollectionWeeks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CollectionWeek.ToListAsync());
+            return View(await _context.CollectionWeeks.ToListAsync());
         }
 
         // GET: CollectionWeeks/Details/5
@@ -32,7 +32,7 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeek
+            var collectionWeek = await _context.CollectionWeeks
                 .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
             if (collectionWeek == null)
             {
@@ -72,7 +72,7 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeek.FindAsync(id);
+            var collectionWeek = await _context.CollectionWeeks.FindAsync(id);
             if (collectionWeek == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeek
+            var collectionWeek = await _context.CollectionWeeks
                 .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
             if (collectionWeek == null)
             {
@@ -138,15 +138,15 @@ namespace MvcPicashNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var collectionWeek = await _context.CollectionWeek.FindAsync(id);
-            _context.CollectionWeek.Remove(collectionWeek);
+            var collectionWeek = await _context.CollectionWeeks.FindAsync(id);
+            _context.CollectionWeeks.Remove(collectionWeek);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CollectionWeekExists(string id)
         {
-            return _context.CollectionWeek.Any(e => e.CollectionWeekId == id);
+            return _context.CollectionWeeks.Any(e => e.CollectionWeekId == id);
         }
     }
 }

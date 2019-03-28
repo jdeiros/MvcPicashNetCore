@@ -12,6 +12,7 @@ namespace MvcPicashNetCore.Models
         [Display(Prompt ="Apellido", Name = "Apellido")]
         public string SurName { get; set; }
         [Display(Prompt ="Fecha de nacimiento", Name = "Fecha de nacimiento")]
+         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Birthdate { get; set; }
         [Display(Prompt ="Teléfono Celular", Name = "Teléfono Celular")]
         public string CellPhone { get; set; }

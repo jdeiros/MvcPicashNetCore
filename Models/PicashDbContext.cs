@@ -119,8 +119,5 @@ namespace MvcPicashNetCore.Models
 
             return customerList.OrderBy((cus) => cus.CustomerId).Take(cant).ToList();
         }
-
-        public DbSet<MvcPicashNetCore.Models.CollectionWeek> CollectionWeek { get; set; }
-
     }
 }
