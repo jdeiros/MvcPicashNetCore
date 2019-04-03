@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.InstallmentsAmount)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollectionWeek.Code)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,6 +44,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.InstallmentsAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionWeek.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.LoanTypeId">Edit</a> |

@@ -35,8 +35,7 @@ namespace MvcPicashNetCore.Models
 
         [Display(Prompt ="Cuotas", Name = "Cuotas")]
 
-        public string CollectionWeekId { get; set; }
-        public CollectionWeek CollectionWeek { get; set; }
+       
         public List<Installment> Installments { get; set; }
 
         [Display(Prompt ="Estado del Préstamo", Name = "Estado del Préstamo")]

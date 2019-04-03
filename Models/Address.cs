@@ -1,10 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcPicashNetCore.Models
 {
     public class Address
     {
         public string AddressId { get; set; }
+         [Required(ErrorMessage = "Ingrese una descripción")]
 
         public string Description { get; set; }
         public string Latitude { get; set; }

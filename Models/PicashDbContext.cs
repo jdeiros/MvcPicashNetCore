@@ -36,35 +36,27 @@ namespace MvcPicashNetCore.Models
                 OptionalContact = "juanperez@perezcompany.com"
             };
 
-            List<LoanType> loanTypes = new List<LoanType>();
-             loanTypes.Add(
-                new LoanType(){
-                    LoanTypeId = Guid.NewGuid().ToString(),
-                    Code = "26",
-                    Description = "Lista 26",
-                    InstallmentsAmount = 26,
-                    InterestPercentage = 40
-                });
-            loanTypes.Add(
-                new LoanType(){
-                    LoanTypeId = Guid.NewGuid().ToString(),
-                    Code = "20",
-                    Description = "Lista 20",
-                    InstallmentsAmount = 20,
-                    InterestPercentage = 30
-                });
-
-            var route = new Route() {RouteId = Guid.NewGuid().ToString(), DebtCollectorId = debtCollector.DebtCollectorId, Code = "RAM"};
-            List<Customer> customers = GenerateRandomCustomers(route, 50);
-            List<Address> addresses = LoadAddresses(customers);
-
-            var collectionWeek = new CollectionWeek() {
+            var collectionWeek = new CollectionWeek()
+            {
                 CollectionWeekId = Guid.NewGuid().ToString(),
                 Code = "LuSa",
                 Description = "Lunes a Sabados, sin feriados",
-                Monday = true, Tuesday = true, Wednesday = true, Thursday = true, Friday = true, Saturday = true,
-                Sunday = false, Holiday = false
+                Monday = true,
+                Tuesday = true,
+                Wednesday = true,
+                Thursday = true,
+                Friday = true,
+                Saturday = true,
+                Sunday = false,
+                Holiday = false
             };
+
+            List<LoanType> loanTypes = LoadLoanTypes(collectionWeek);
+            var route = new Route() { RouteId = Guid.NewGuid().ToString(), DebtCollectorId = debtCollector.DebtCollectorId, Code = "TOR", Name = "Tortuguitas" };
+            List<Customer> customers = GenerateRandomCustomers(route, 50);
+            List<Address> addresses = LoadAddresses(customers);
+
+
 
             modelBuilder.Entity<CollectionWeek>().HasData(collectionWeek);
             modelBuilder.Entity<DebtCollector>().HasData(debtCollector);
@@ -74,9 +66,35 @@ namespace MvcPicashNetCore.Models
             modelBuilder.Entity<LoanType>().HasData(loanTypes.ToArray());
         }
 
+        private static List<LoanType> LoadLoanTypes(CollectionWeek collectionWeek)
+        {
+            List<LoanType> loanTypes = new List<LoanType>();
+            loanTypes.Add(
+               new LoanType()
+               {
+                   LoanTypeId = Guid.NewGuid().ToString(),
+                   Code = "26",
+                   Description = "Lista 26",
+                   InstallmentsAmount = 26,
+                   InterestPercentage = 40,
+                   CollectionWeekId = collectionWeek.CollectionWeekId
+               });
+            loanTypes.Add(
+                new LoanType()
+                {
+                    LoanTypeId = Guid.NewGuid().ToString(),
+                    Code = "20",
+                    Description = "Lista 20",
+                    InstallmentsAmount = 20,
+                    InterestPercentage = 30,
+                    CollectionWeekId = collectionWeek.CollectionWeekId
+                });
+            return loanTypes;
+        }
+
         private List<Address> LoadAddresses(List<Customer> customers)
         {
-            string[] street = { "Rosales", "Agulleiro", "Beiro", "Cuenca", "Virasoro", "M. T. de Alvear", "Bianco" };
+            string[] street = { "Directorio", "Moreno", "Av. Olivos", "Venezuela", "Misiones", "Luis María Drago", "Albert Einstein" };
             string[] number = { "1243", "666", "895", "397", "1236", "1789", "2765" };
 
             Random rnd = new Random();
@@ -104,8 +122,9 @@ namespace MvcPicashNetCore.Models
             string[] name1 = { "Alba", "Felipa", "Eusebio", "Farid", "Donald", "Alvaro", "Nicolás" };
             string[] surname = { "Ruiz", "Sarmiento", "Uribe", "Sosa", "Pérez", "Toledo", "Herrera" };
             string[] name2 = { "Freddy", "Anabel", "Rick", "Murty", "Silvana", "Diomedes", "Nicomedes", "Teodoro" };
-
-
+            
+            Random rnd = new Random();
+            
             var customerList = from n1 in name1
                                from n2 in name2
                                from sn in surname
@@ -114,13 +133,13 @@ namespace MvcPicashNetCore.Models
                                    RouteId = route.RouteId,
                                    Name = $"{n1} {n2}",
                                    SurName = $"{sn}",
-                                   CustomerId = Guid.NewGuid().ToString()
+                                   CustomerId = Guid.NewGuid().ToString(),
+                                   Birthdate = DateTime.Now.AddYears(-rnd.Next(21, 75)),
+                                   CellPhone = "+54 9 11 5521 "+ rnd.Next(0,9999),
+                                   OptionalContact = $"{n1}.{n2}"+ "@gmail.com"
                                };
 
             return customerList.OrderBy((cus) => cus.CustomerId).Take(cant).ToList();
         }
-
-        public DbSet<MvcPicashNetCore.Models.CollectionWeek> CollectionWeek { get; set; }
-
     }
 }

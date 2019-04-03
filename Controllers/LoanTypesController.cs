@@ -45,6 +45,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: LoanTypes/Create
         public IActionResult Create()
         {
+            ViewData["CollectionWeekId"] = new SelectList(_context.CollectionWeeks, "CollectionWeekId", "Code");
             return View();
         }
 

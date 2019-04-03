@@ -37,7 +37,7 @@ namespace MvcPicashNetCore.Models
 
         [Display(Prompt ="Feriados", Name = "Feriados")]
         public bool Holiday  { get; set; }
-        public List<Loan> Loans { get; set; }
+        public List<LoanType> LoanTypes { get; set; }
 
         public CollectionWeek()
         {
