@@ -43,12 +43,18 @@
             </div> -->
             
             <div class="form-group">
-                <a class="btn btn-warning" asp-action="Simulation">Volver al Simulador</a>
+                
                 <input type="submit" value="Crear Prestamo" class="btn btn-danger" />
                 <!-- @Html.ActionLink("Simulador", "Loans", "Simulation", null, new {miAtributo ="Valor1", @class = "btn btn-danger"}) -->
                 
             </div>
 
+        </form>
+        
+        <form asp-controller="Loans" asp-action="Simulate" method="get">
+            <div class="form-group">
+                <a class="btn btn-warning" asp-action="Simulation">Simular</a>
+            </div>
         </form>
         
     </div>
@@ -91,14 +97,19 @@
                             <dd class = "col-sm-8">
                                 @Html.DisplayFor(model => model.TotalAmmount)
                             </dd>  
-                            
+                             <dt class = "col-sm-4">
+                                @Html.DisplayNameFor(model => model.LoanType.InterestPercentage)
+                            </dt>
+                            <dd class = "col-sm-8">
+                                @Html.DisplayFor(model => model.LoanType.InterestPercentage)
+                            </dd>  
                             <dt class = "col-sm-4">
                                 
-                                Monto total a cobrar: 
+                                A Cobrar 
                             </dt>
                             <dd class = "col-sm-8">
                                 
-                                @Html.Display("@model => model.TotalAmmount", null, "A Cobrar", null)
+                                @ViewBag.LoanTotalAmountWithInterest
                             </dd> 
 
                              <dt class = "col-sm-4">
@@ -111,7 +122,7 @@
                                 @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
                             </dt>
                             <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.LoanType.InterestPercentage)
+                                @Html.DisplayFor(model => model.LoanType.InstallmentsAmount)
                             </dd>                         
                         </dl>
                     </div>
@@ -125,20 +136,23 @@
                     <div>
                         <h3>Tabla de amortización</h3>
                         
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>
-                                        Cuota Nro.:
+                                        Cuota Nro.
                                     </th>
                                     <th>
-                                        Estado de la cuota:
+                                        Estado de la cuota
                                     </th>
                                     <th>
-                                        Monto a pagar: 
+                                        Monto a pagar
                                     </th>
                                     <th>
-                                        Fecha de vencimiento:
+                                        Pago
+                                    </th>
+                                    <th>
+                                        Fecha de vencimiento
                                     </th>
                                 
                                 </tr>
@@ -158,6 +172,9 @@
                                             </td>
                                             <td>
                                                 @String.Format("{0:C}", @item.Amount)
+                                            </td>
+                                            <td>
+                                                @String.Format("{0:C}", @item.PaymentAmount)
                                             </td>
                                             <td>
                                                 @item.Duedate.ToString("dd/MM/yyyy")

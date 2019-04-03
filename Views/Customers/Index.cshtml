@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Clientes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear Nuevo Cliente.</a>
 </p>
 
 <form asp-controller="Customers" asp-action="Index" method="get">
@@ -36,7 +36,7 @@
                 @Html.DisplayNameFor(model => model.OptionalContact)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Route)
+                @Html.DisplayNameFor(model => model.Route.Code)
             </th>
             <th></th>
         </tr>
@@ -60,7 +60,7 @@
                 @Html.DisplayFor(modelItem => item.OptionalContact)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Route.RouteId)
+                @Html.DisplayFor(modelItem => item.Route.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |

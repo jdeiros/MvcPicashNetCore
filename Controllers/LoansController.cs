@@ -53,7 +53,32 @@ namespace MvcPicashNetCore.Controllers
             return View();
         }
 
-       
+        public IActionResult Simulate([Bind("LoanId,CreationDate,DateFrom,DateTo,TotalAmmount,LoanTypeId,CustomerId,LoanStatus")] Loan Loan)
+        {
+            
+            Loan.CreationDate = DateTime.Today;
+            Loan.DateFrom = DateTime.Today;
+            //TODO: Cargar LoanType con LoanTypeId            
+            Loan.LoanType = _context.LoanTypes.Where(l => l.LoanTypeId == Loan.LoanTypeId).FirstOrDefault();
+            Loan.DateTo = DateTime.Today.AddDays(Loan.LoanType.InstallmentsAmount);
+            Loan.LoanStatus = LoanStatus.Created;
+
+            if (ModelState.IsValid)
+            {                
+                //ahora creo las cuotas y le va a mandar el id de loan
+                List<Installment> completeListOfInstallments = SimulateAmortization(Loan);
+                ViewBag.MensajeCuotas = completeListOfInstallments;               
+
+                /****************** */
+                LoadCombos(Loan);
+                return View("Create",Loan);
+                /********************* */
+
+                // return RedirectToAction(nameof(Index));
+            }
+            LoadCombos(Loan);
+            return View("Create",Loan);
+        }
 
         // POST: Loans/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -63,27 +88,45 @@ namespace MvcPicashNetCore.Controllers
         public async Task<IActionResult> Create([Bind("LoanId,CreationDate,DateFrom,DateTo,TotalAmmount,LoanTypeId,CustomerId,LoanStatus")] Loan Loan)
         {
             Loan.CreationDate = DateTime.Today;
-            Loan.DateFrom = DateTime.Today;
+
+            
             //TODO: Cargar LoanType con LoanTypeId
             
             Loan.LoanType = _context.LoanTypes.Where(l => l.LoanTypeId == Loan.LoanTypeId).FirstOrDefault();
+            Loan.DateFrom = GetNextInstallmentDueDate(DateTime.Today, Loan.LoanType);
             Loan.DateTo = DateTime.Today.AddDays(Loan.LoanType.InstallmentsAmount);
             Loan.LoanStatus = LoanStatus.Created;
 
             if (ModelState.IsValid)
             {
-                //primero guardo el prestamo para tener el id que luego se va a colocar a las cuotas
-                _context.Add(Loan);
-                await _context.SaveChangesAsync();
-
-                //ahora creo las cuotas y le va a mandar el id de loan
-                List<Installment> completeListOfInstallments = SimulateAmortization(Loan);
-                ViewBag.MensajeCuotas = completeListOfInstallments;
-                foreach(Installment inst in completeListOfInstallments)
-                {
-                    _context.Add(inst);
+                try{
+                    //primero guardo el prestamo para tener el id que luego se va a colocar a las cuotas
+                    _context.Add(Loan);
                     await _context.SaveChangesAsync();
+
+                    //ahora creo las cuotas y le va a mandar el id de loan
+                    List<Installment> completeListOfInstallments = SimulateAmortization(Loan);
+                    ViewBag.MensajeCuotas = completeListOfInstallments;
+                    
+
+                    
+
+                    foreach(Installment inst in completeListOfInstallments)
+                    {
+                        _context.Add(inst);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    var totalWithInterest =  Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
+                    ViewBag.LoanTotalAmountWithInterest = String.Format("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format("{0:C}", GetInstallmentTotalAmount(Loan))  + " Cada Una.";
+
                 }
+                catch(Exception ex)
+                {
+                    //Log 
+                    throw new Exception("error creando el prestamo. detalle del error: " + ex.Message);
+                }
+                
 
                 /****************** */
                 LoadCombos(Loan);
@@ -98,38 +141,66 @@ namespace MvcPicashNetCore.Controllers
             return View(Loan);
         }
 
+        /// recibe fecha de referencia y el tipo de prestamos y calcula el dia siguiente a vencer cuota
+        private DateTime GetNextInstallmentDueDate(DateTime refDate, LoanType loanType)
+        {
+            loanType.CollectionWeek = _context.CollectionWeeks.Where(l => l.CollectionWeekId == loanType.CollectionWeekId).FirstOrDefault();
+            DateTime next = refDate.AddDays(1);
+            switch(next.DayOfWeek){
+                case DayOfWeek.Monday: if(!loanType.CollectionWeek.Monday) next = next.AddDays(1); break;
+                case DayOfWeek.Tuesday: if(!loanType.CollectionWeek.Tuesday) next = next.AddDays(1); break;
+                case DayOfWeek.Wednesday: if(!loanType.CollectionWeek.Wednesday) next = next.AddDays(1); break;
+                case DayOfWeek.Thursday: if(!loanType.CollectionWeek.Thursday) next = next.AddDays(1); break;
+                case DayOfWeek.Friday: if(!loanType.CollectionWeek.Friday) next = next.AddDays(1); break;
+                case DayOfWeek.Saturday: if(!loanType.CollectionWeek.Saturday) next = next.AddDays(1); break;
+                case DayOfWeek.Sunday: if(!loanType.CollectionWeek.Sunday) next = next.AddDays(1); break;
+                default: break;
+            }
+            //falta validar los feriados, en un ciclo recorrer mientras sea feriado aumentar un dia.
+            return next;
+        }
+
         private void LoadCombos(Loan Loan)
         {
             ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Description");
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", Loan.CustomerId);
         }
-         private void LoadCombos()
+        private void LoadCombos()
         {
             ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Description");
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
         }
-        private static List<Installment> SimulateAmortization(Loan Loan)
+        private List<Installment> SimulateAmortization(Loan Loan)
         {
             /************ aca creo las cuotas para este acuerdo (simulacion debería ser) */
             List<Installment> completeListOfInstallments = new List<Installment>();
-           
-            float installmentTotalAmount = (Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100) / Loan.LoanType.InstallmentsAmount;
-            for (int i = 1; i <= Loan.LoanType.InstallmentsAmount; i++)
+
+            float installmentTotalAmount = GetInstallmentTotalAmount(Loan);
+
+            DateTime refDate = DateTime.Today;
+            for (int i = 0; i <= Loan.LoanType.InstallmentsAmount-1; i++)
             {
+                DateTime next = GetNextInstallmentDueDate(refDate, Loan.LoanType);                
                 completeListOfInstallments.Add(
                             new Installment()
                             {
                                 InstallmentId = Guid.NewGuid().ToString(),
-                                InstallmentNumber = i,
+                                InstallmentNumber = i+1,
                                 InstallmentStatus = InstallmentStatus.Pending,
                                 LoanId = Loan.LoanId,
                                 Amount = installmentTotalAmount,
                                 PaymentAmount = 0,
-                                Duedate = DateTime.Today.AddDays(i)
+                                Duedate = next
                             });
+                refDate = next;
             }
 
             return completeListOfInstallments;
+        }
+
+        private static float GetInstallmentTotalAmount(Loan Loan)
+        {
+            return (Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100) / Loan.LoanType.InstallmentsAmount;
         }
 
         // GET: Loans/Edit/5

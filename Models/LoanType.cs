@@ -20,7 +20,9 @@ namespace MvcPicashNetCore.Models
         [Required(ErrorMessage = "Debe completar la cantidad de cuotas.")]
         public int InstallmentsAmount { get; set; }
         public List<Loan> Loans { get; set; }
-
+        public string CollectionWeekId { get; set; }
+        public CollectionWeek CollectionWeek { get; set; }
+        
         public LoanType()
         {
         }

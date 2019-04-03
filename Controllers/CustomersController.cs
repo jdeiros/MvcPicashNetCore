@@ -63,7 +63,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
-            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "RouteId");
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
             return View();
         }
 
@@ -80,7 +80,7 @@ namespace MvcPicashNetCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "RouteId", customer.RouteId);
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", customer.RouteId);
             return View(customer);
         }
 
@@ -97,7 +97,7 @@ namespace MvcPicashNetCore.Controllers
             {
                 return NotFound();
             }
-            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "RouteId", customer.RouteId);
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", customer.RouteId);
             return View(customer);
         }
 
@@ -133,7 +133,7 @@ namespace MvcPicashNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "RouteId", customer.RouteId);
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", customer.RouteId);
             return View(customer);
         }
 
