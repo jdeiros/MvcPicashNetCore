@@ -178,14 +178,14 @@ namespace MvcPicashNetCore.Controllers
             float installmentTotalAmount = GetInstallmentTotalAmount(Loan);
 
             DateTime refDate = DateTime.Today;
-            for (int i = 0; i <= Loan.LoanType.InstallmentsAmount-1; i++)
+            for (int i = 1; i <= Loan.LoanType.InstallmentsAmount; i++)
             {
                 DateTime next = GetNextInstallmentDueDate(refDate, Loan.LoanType);                
                 completeListOfInstallments.Add(
                             new Installment()
                             {
                                 InstallmentId = Guid.NewGuid().ToString(),
-                                InstallmentNumber = i+1,
+                                InstallmentNumber = i,
                                 InstallmentStatus = InstallmentStatus.Pending,
                                 LoanId = Loan.LoanId,
                                 Amount = installmentTotalAmount,
@@ -281,7 +281,12 @@ namespace MvcPicashNetCore.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var Loan = await _context.Loans.FindAsync(id);
+
+            List<Installment> installments = _context.Installments.Where(i => i.LoanId == Loan.LoanId).ToList();
+            _context.Installments.RemoveRange(installments);
+
             _context.Loans.Remove(Loan);
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
