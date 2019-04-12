@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MvcPicashNetCore.Models;
+using Rotativa.AspNetCore;
 
 namespace MvcPicashNetCore
 {
@@ -83,6 +84,8 @@ namespace MvcPicashNetCore
 
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }
