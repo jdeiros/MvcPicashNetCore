@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcPicashNetCore.Models;
+using Rotativa.AspNetCore;
 
 namespace MvcPicashNetCore.Controllers
 {
@@ -42,6 +43,23 @@ namespace MvcPicashNetCore.Controllers
             return View(collectionWeek);
         }
 
+        public async Task<IActionResult> ViewAsPDF(string id)  
+        {  
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            CollectionWeek collectionWeek = await _context.CollectionWeeks
+                .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
+            if (collectionWeek == null)
+            {
+                return NotFound();
+            }
+
+            
+            return new ViewAsPdf("Details", collectionWeek);  
+        } 
         // GET: CollectionWeeks/Create
         public IActionResult Create()
         {
@@ -63,6 +81,7 @@ namespace MvcPicashNetCore.Controllers
             }
             return View(collectionWeek);
         }
+       
 
         // GET: CollectionWeeks/Edit/5
         public async Task<IActionResult> Edit(string id)
