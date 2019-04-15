@@ -9,7 +9,7 @@ namespace MvcPicashNetCore.Models
     {
         public string CollectionWeekId { get; set; }
 
-        [Display(Prompt ="Código", Name = "Código")]
+        [Display(Prompt ="Código Semana Cobranza", Name = "Código Semana Cobranza")]
         public string Code { get; set; }
         [Display(Prompt ="Descripción", Name = "Descripción")]
         public string Description { get; set; }

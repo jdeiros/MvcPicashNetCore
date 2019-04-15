@@ -21,7 +21,10 @@ namespace MvcPicashNetCore.Controllers
         // GET: LoanTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LoanTypes.ToListAsync());
+            //al cargar la tabla, se debe recibir el contexto Loantypes con el CollectionWeek cargado
+            //para que pueda acceder al Codigo de Semana
+            var picashDbContext = _context.LoanTypes.Include(p => p.CollectionWeek);
+            return View(await picashDbContext.ToListAsync());
         }
 
         // GET: LoanTypes/Details/5
