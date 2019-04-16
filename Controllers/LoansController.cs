@@ -23,7 +23,8 @@ namespace MvcPicashNetCore.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var picashDbContext = _context.Loans.Include(p => p.Customer);
+            var picashDbContext = _context.Loans.Include(p => p.Customer).Include(p => p.LoanType);
+            
             return View(await picashDbContext.ToListAsync());
         }
 

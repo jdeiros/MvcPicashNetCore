@@ -27,7 +27,7 @@ namespace MvcPicashNetCore.Controllers
         public async Task<IActionResult> Index(string searchString)
         {
             //(from c in _context.Customers select c) es una consulta LinQ
-            var customers = from c in _context.Customers select c;
+            var customers = from c in _context.Customers.Include(p => p.Route).Include(a => a.Addresses) select c;
 
             if(!String.IsNullOrEmpty(searchString))
             {
