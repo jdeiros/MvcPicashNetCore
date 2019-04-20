@@ -6,26 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcPicashNetCore.Models;
-using Rotativa.AspNetCore;
 
 namespace MvcPicashNetCore.Controllers
 {
-    public class CollectionWeeksController : Controller
+    public class HolydaysController : Controller
     {
         private readonly PicashDbContext _context;
 
-        public CollectionWeeksController(PicashDbContext context)
+        public HolydaysController(PicashDbContext context)
         {
             _context = context;
         }
 
-        // GET: CollectionWeeks
+        // GET: Holydays
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CollectionWeeks.ToListAsync());
+            return View(await _context.Holydays.ToListAsync());
         }
 
-        // GET: CollectionWeeks/Details/5
+        // GET: Holydays/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -33,57 +32,39 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeeks
-                .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
-            if (collectionWeek == null)
+            var holyday = await _context.Holydays
+                .FirstOrDefaultAsync(m => m.HolydayId == id);
+            if (holyday == null)
             {
                 return NotFound();
             }
 
-            return View(collectionWeek);
+            return View(holyday);
         }
 
-        public async Task<IActionResult> ViewAsPDF(string id)  
-        {  
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            CollectionWeek collectionWeek = await _context.CollectionWeeks
-                .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
-            if (collectionWeek == null)
-            {
-                return NotFound();
-            }
-
-            
-            return new ViewAsPdf("Details", collectionWeek);  
-        } 
-        // GET: CollectionWeeks/Create
+        // GET: Holydays/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CollectionWeeks/Create
+        // POST: Holydays/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CollectionWeekId,Code,Description,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Holiday")] CollectionWeek collectionWeek)
+        public async Task<IActionResult> Create([Bind("HolydayId,Description,Date")] Holyday holyday)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(collectionWeek);
+                _context.Add(holyday);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(collectionWeek);
+            return View(holyday);
         }
-       
 
-        // GET: CollectionWeeks/Edit/5
+        // GET: Holydays/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -91,22 +72,22 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeeks.FindAsync(id);
-            if (collectionWeek == null)
+            var holyday = await _context.Holydays.FindAsync(id);
+            if (holyday == null)
             {
                 return NotFound();
             }
-            return View(collectionWeek);
+            return View(holyday);
         }
 
-        // POST: CollectionWeeks/Edit/5
+        // POST: Holydays/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CollectionWeekId,Code,Description,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Holiday")] CollectionWeek collectionWeek)
+        public async Task<IActionResult> Edit(string id, [Bind("HolydayId,Description,Date")] Holyday holyday)
         {
-            if (id != collectionWeek.CollectionWeekId)
+            if (id != holyday.HolydayId)
             {
                 return NotFound();
             }
@@ -115,12 +96,12 @@ namespace MvcPicashNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(collectionWeek);
+                    _context.Update(holyday);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CollectionWeekExists(collectionWeek.CollectionWeekId))
+                    if (!HolydayExists(holyday.HolydayId))
                     {
                         return NotFound();
                     }
@@ -131,10 +112,10 @@ namespace MvcPicashNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(collectionWeek);
+            return View(holyday);
         }
 
-        // GET: CollectionWeeks/Delete/5
+        // GET: Holydays/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -142,32 +123,30 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var collectionWeek = await _context.CollectionWeeks
-                .FirstOrDefaultAsync(m => m.CollectionWeekId == id);
-            if (collectionWeek == null)
+            var holyday = await _context.Holydays
+                .FirstOrDefaultAsync(m => m.HolydayId == id);
+            if (holyday == null)
             {
                 return NotFound();
             }
 
-            return View(collectionWeek);
+            return View(holyday);
         }
 
-        // POST: CollectionWeeks/Delete/5
+        // POST: Holydays/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var collectionWeek = await _context.CollectionWeeks.FindAsync(id);
-            _context.CollectionWeeks.Remove(collectionWeek);
+            var holyday = await _context.Holydays.FindAsync(id);
+            _context.Holydays.Remove(holyday);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CollectionWeekExists(string id)
+        private bool HolydayExists(string id)
         {
-            return _context.CollectionWeeks.Any(e => e.CollectionWeekId == id);
+            return _context.Holydays.Any(e => e.HolydayId == id);
         }
-
-        
     }
 }
