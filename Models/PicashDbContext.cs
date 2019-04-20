@@ -17,6 +17,7 @@ namespace MvcPicashNetCore.Models
         public DbSet<LoanType> LoanTypes { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<CollectionWeek> CollectionWeeks { get; set; }
+        public DbSet<Holyday> Holydays { get; set; }
 
         public PicashDbContext(DbContextOptions<PicashDbContext> options): base(options)
         {
@@ -50,6 +51,13 @@ namespace MvcPicashNetCore.Models
                 Sunday = false,
                 Holiday = false
             };
+            
+            var holiday = new Holyday()
+            {
+                HolydayId = Guid.NewGuid().ToString(),
+                Description = "Día del Trabajador",
+                Date = Convert.ToDateTime("5/1/2019", new CultureInfo("en-US"))
+            };
 
             List<LoanType> loanTypes = LoadLoanTypes(collectionWeek);
             var route = new Route() { RouteId = Guid.NewGuid().ToString(), DebtCollectorId = debtCollector.DebtCollectorId, Code = "TOR", Name = "Tortuguitas" };
@@ -59,6 +67,7 @@ namespace MvcPicashNetCore.Models
 
 
             modelBuilder.Entity<CollectionWeek>().HasData(collectionWeek);
+            modelBuilder.Entity<Holyday>().HasData(holiday);
             modelBuilder.Entity<DebtCollector>().HasData(debtCollector);
             modelBuilder.Entity<Route>().HasData(route);
             modelBuilder.Entity<Customer>().HasData(customers.ToArray());

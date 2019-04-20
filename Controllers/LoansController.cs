@@ -144,20 +144,40 @@ namespace MvcPicashNetCore.Controllers
 
         /// recibe fecha de referencia y el tipo de prestamos y calcula el dia siguiente a vencer cuota
         private DateTime GetNextInstallmentDueDate(DateTime refDate, LoanType loanType)
-        {
-            loanType.CollectionWeek = _context.CollectionWeeks.Where(l => l.CollectionWeekId == loanType.CollectionWeekId).FirstOrDefault();
+        {            
+            loanType = _context.LoanTypes.Where(lt => lt.LoanTypeId == loanType.LoanTypeId).Include(c => c.CollectionWeek).FirstOrDefault();
             DateTime next = refDate.AddDays(1);
-            switch(next.DayOfWeek){
-                case DayOfWeek.Monday: if(!loanType.CollectionWeek.Monday) next = next.AddDays(1); break;
-                case DayOfWeek.Tuesday: if(!loanType.CollectionWeek.Tuesday) next = next.AddDays(1); break;
-                case DayOfWeek.Wednesday: if(!loanType.CollectionWeek.Wednesday) next = next.AddDays(1); break;
-                case DayOfWeek.Thursday: if(!loanType.CollectionWeek.Thursday) next = next.AddDays(1); break;
-                case DayOfWeek.Friday: if(!loanType.CollectionWeek.Friday) next = next.AddDays(1); break;
-                case DayOfWeek.Saturday: if(!loanType.CollectionWeek.Saturday) next = next.AddDays(1); break;
-                case DayOfWeek.Sunday: if(!loanType.CollectionWeek.Sunday) next = next.AddDays(1); break;
-                default: break;
-            }
-            //falta validar los feriados, en un ciclo recorrer mientras sea feriado aumentar un dia.
+            bool ready = false;
+            bool isHolyday = false;
+            while(!ready)
+            {
+                switch(next.DayOfWeek){
+                    case DayOfWeek.Monday: if(!loanType.CollectionWeek.Monday) next = next.AddDays(1); break;
+                    case DayOfWeek.Tuesday: if(!loanType.CollectionWeek.Tuesday) next = next.AddDays(1); break;
+                    case DayOfWeek.Wednesday: if(!loanType.CollectionWeek.Wednesday) next = next.AddDays(1); break;
+                    case DayOfWeek.Thursday: if(!loanType.CollectionWeek.Thursday) next = next.AddDays(1); break;
+                    case DayOfWeek.Friday: if(!loanType.CollectionWeek.Friday) next = next.AddDays(1); break;
+                    case DayOfWeek.Saturday: if(!loanType.CollectionWeek.Saturday) next = next.AddDays(1); break;
+                    case DayOfWeek.Sunday: if(!loanType.CollectionWeek.Sunday) next = next.AddDays(1); break;
+                    default: break;
+                }
+
+                if(!loanType.CollectionWeek.Holiday)
+                    isHolyday = _context.Holydays.Any(h => h.Date.Date == next.Date.Date);
+
+                switch(next.DayOfWeek){
+                    case DayOfWeek.Monday: if(loanType.CollectionWeek.Monday && !isHolyday) ready=true; else next = next.AddDays(1); break;
+                    case DayOfWeek.Tuesday: if(loanType.CollectionWeek.Tuesday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    case DayOfWeek.Wednesday: if(loanType.CollectionWeek.Wednesday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    case DayOfWeek.Thursday: if(loanType.CollectionWeek.Thursday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    case DayOfWeek.Friday: if(loanType.CollectionWeek.Friday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    case DayOfWeek.Saturday: if(loanType.CollectionWeek.Saturday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    case DayOfWeek.Sunday: if(loanType.CollectionWeek.Sunday && !isHolyday) ready=true; else next = next.AddDays(1);  break;
+                    default: break;
+                }
+
+            }            
+
             return next;
         }
 

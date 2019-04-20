@@ -19,7 +19,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DebtCollector)
+                @Html.DisplayNameFor(model => model.DebtCollector.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DebtCollector.SurName)
             </th>
             <th></th>
         </tr>
@@ -34,7 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DebtCollector.DebtCollectorId)
+                @Html.DisplayFor(modelItem => item.DebtCollector.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DebtCollector.SurName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RouteId">Edit</a> |

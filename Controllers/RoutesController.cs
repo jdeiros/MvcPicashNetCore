@@ -47,7 +47,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: Routes/Create
         public IActionResult Create()
         {
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "DebtCollectorId");
+            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "Name");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace MvcPicashNetCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "DebtCollectorId", route.DebtCollectorId);
+            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "Name", route.DebtCollectorId);
             return View(route);
         }
 

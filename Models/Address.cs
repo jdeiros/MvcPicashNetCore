@@ -13,7 +13,8 @@ namespace MvcPicashNetCore.Models
         public string Longitude { get; set; }
         public bool IsMain { get; set; }
         public string CustomerId { get; set; }
-        Customer Customer { get; set; }
+
+        public Customer Customer { get; set; }
 
         public Address()
         {

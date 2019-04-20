@@ -21,7 +21,8 @@ namespace MvcPicashNetCore.Controllers
         // GET: Addresses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Addresses.ToListAsync());
+            var picashDbContext = _context.Addresses.Include(p => p.Customer);
+            return View(await picashDbContext.ToListAsync());
         }
 
         // GET: Addresses/Details/5
@@ -45,6 +46,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: Addresses/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name");
             return View();
         }
 
@@ -61,6 +63,7 @@ namespace MvcPicashNetCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", address.CustomerId);
             return View(address);
         }
 
