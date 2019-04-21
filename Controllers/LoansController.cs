@@ -40,6 +40,7 @@ namespace MvcPicashNetCore.Controllers {
                 return NotFound ();
             }
 
+            Loan.Installments = Loan.Installments.OrderBy(x => x.InstallmentNumber).ToList();
             var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
             ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
 
@@ -56,15 +57,17 @@ namespace MvcPicashNetCore.Controllers {
                 .Include (p => p.Customer)
                 .Include(p => p.LoanType)
                 .Include(p => p.Installments)
+                .Include(p => p.Customer.Addresses)
                 .FirstOrDefaultAsync (m => m.LoanId == id);
             if (Loan == null) {
                 return NotFound ();
             }
-
+            Loan.Installments = Loan.Installments.OrderBy(x => x.InstallmentNumber).ToList();
             var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
             ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
-
-            return new ViewAsPdf("Details", Loan); 
+            
+            return new ViewAsPdf("PrintAsPdf", Loan); 
+            //return View (Loan);
         }
         // GET: Loans/Create
         public IActionResult Create () {
@@ -109,7 +112,7 @@ namespace MvcPicashNetCore.Controllers {
 
             Loan.LoanType = _context.LoanTypes.Where (l => l.LoanTypeId == Loan.LoanTypeId).FirstOrDefault ();
             Loan.DateFrom = GetNextInstallmentDueDate (DateTime.Today, Loan.LoanType);
-            Loan.DateTo = DateTime.Today.AddDays (Loan.LoanType.InstallmentsAmount);
+            //Loan.DateTo = DateTime.Today.AddDays (Loan.LoanType.InstallmentsAmount);
             Loan.LoanStatus = LoanStatus.Created;
 
             if (ModelState.IsValid) {
@@ -126,7 +129,9 @@ namespace MvcPicashNetCore.Controllers {
                         _context.Add (inst);
                         await _context.SaveChangesAsync ();
                     }
-
+                    Loan.DateTo = completeListOfInstallments.LastOrDefault().Duedate;
+                    _context.Update(Loan);
+                    await _context.SaveChangesAsync ();
                     var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
                     ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
 
