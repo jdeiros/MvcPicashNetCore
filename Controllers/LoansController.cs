@@ -40,6 +40,7 @@ namespace MvcPicashNetCore.Controllers {
                 return NotFound ();
             }
 
+            Loan.Installments = Loan.Installments.OrderBy(x => x.InstallmentNumber).ToList();
             var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
             ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
 
@@ -60,11 +61,11 @@ namespace MvcPicashNetCore.Controllers {
             if (Loan == null) {
                 return NotFound ();
             }
-
+            Loan.Installments = Loan.Installments.OrderBy(x => x.InstallmentNumber).ToList();
             var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
             ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
-
-            return new ViewAsPdf("Details", Loan); 
+            
+            return new ViewAsPdf("PrintAsPdf", Loan); 
         }
         // GET: Loans/Create
         public IActionResult Create () {
