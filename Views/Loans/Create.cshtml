@@ -48,9 +48,8 @@
                 <!-- @Html.ActionLink("Simulador", "Loans", "Simulation", null, new {miAtributo ="Valor1", @class = "btn btn-danger"}) -->
                 
             </div>
-
         </form>
-        
+
         <!-- <form asp-controller="Loans" asp-action="Simulate" method="get">
             <div class="form-group">
                 <a class="btn btn-warning" asp-action="Simulation">Simular</a>
@@ -142,15 +141,11 @@
                                     <th>
                                         Cuota Nro.
                                     </th>
-                                    <th>
-                                        Estado de la cuota
-                                    </th>
+                                    
                                     <th>
                                         Monto a pagar
                                     </th>
-                                    <th>
-                                        Pago
-                                    </th>
+                                   
                                     <th>
                                         Fecha de vencimiento
                                     </th>
@@ -167,15 +162,11 @@
                                             <td>
                                                 @item.InstallmentNumber
                                             </td>
-                                            <td>
-                                                @item.InstallmentStatus
-                                            </td>
+                                            
                                             <td>
                                                 @String.Format("{0:C}", @item.Amount)
                                             </td>
-                                            <td>
-                                                @String.Format("{0:C}", @item.PaymentAmount)
-                                            </td>
+                                            
                                             <td>
                                                 @item.Duedate.ToString("dd/MM/yyyy")
                                             </td>
@@ -188,9 +179,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        
+        </div>        
     
 </div>
 
