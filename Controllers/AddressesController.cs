@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcPicashNetCore.Models;
@@ -57,8 +58,22 @@ namespace MvcPicashNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AddressId,Description,Latitude,Longitude,IsMain,CustomerId")] Address address)
         {
+            ViewBag.PersonalizedError = "";
+
             if (ModelState.IsValid)
             {
+                if(address.IsMain == true && _context.Addresses.Any(a => a.CustomerId == address.CustomerId && a.IsMain == true))
+                {  address = await _context.Addresses
+                                        .Include (p => p.Customer)
+                                        .FirstOrDefaultAsync (m => m.CustomerId == address.CustomerId);
+                    
+                    ViewBag.PersonalizedError = "Ya existe una dirección principal para el cliente "+ address.Customer.Name +" "+ address.Customer.SurName; 
+                    ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Name", address.CustomerId);
+                    return View(address);                   
+                }
+                else
+                    ViewBag.PersonalizedError = "";
+
                 _context.Add(address);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
