@@ -17,7 +17,7 @@
     </p>
 </form>
 
-<table class="table table-sm">
+<table class="table table-sm table-striped">
     <thead>
         <tr>
             <th>
@@ -62,17 +62,26 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OptionalContact)
             </td>
+            <td>
             @{
-                foreach (Address addr in item.Addresses)
+                foreach (Address addr in item.Addresses.Where(a => a.IsMain == true))
                 {
-                    <td>
+                    <table class="table ">
                         @if(addr.IsMain == true)
                          {
+                             <tr>
+                                 <td>
+                             @Html.DisplayFor(modelItem => addr.IsMain) 
+                             </td>
+                             <td>
                              @Html.DisplayFor(modelItem => addr.Description)
+                            </td>
+                             </tr>
                          }
-                    </td>
+                    </table>
                 }
             }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Route.Code)
             </td>
