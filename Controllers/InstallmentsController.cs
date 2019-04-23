@@ -21,7 +21,13 @@ namespace MvcPicashNetCore.Controllers
         // GET: Installments
         public async Task<IActionResult> Index()
         {
-            var picashDbContext = _context.Installments.Include(i => i.Loan);
+            var picashDbContext = _context.Installments
+                                    .Include(i => i.Loan)
+                                    .Include(x => x.Loan.Customer)
+                                    .OrderBy(x => x.Loan.LoanId)
+                                    .OrderBy(x => x.InstallmentNumber)
+                                    .Where(x => x.Duedate == DateTime.Today);
+           
             return View(await picashDbContext.ToListAsync());
         }
 
@@ -76,11 +82,17 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var installment = await _context.Installments.FindAsync(id);
+            //var installment = await _context.Installments.FindAsync(id);
+            var installment = await _context.Installments
+                .Include (x => x.Loan)
+                .Include(x => x.Loan.Customer)
+                .FirstOrDefaultAsync (m => m.InstallmentId == id);
+
             if (installment == null)
             {
                 return NotFound();
             }
+
             ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
         }
@@ -90,7 +102,7 @@ namespace MvcPicashNetCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("InstallmentId,LoanId,Amount,InstallmentNumber,Duedate,InstallmentStatus")] Installment installment)
+        public async Task<IActionResult> Edit(string id, [Bind("InstallmentId,LoanId,Amount,InstallmentNumber,Duedate,InstallmentStatus,PaymentAmount")] Installment installment)
         {
             if (id != installment.InstallmentId)
             {
@@ -101,6 +113,13 @@ namespace MvcPicashNetCore.Controllers
             {
                 try
                 {
+                    if(installment.Amount > installment.PaymentAmount)
+                        installment.InstallmentStatus = InstallmentStatus.PartialPayment;
+                    else
+                        if(installment.Amount < installment.PaymentAmount)
+                            installment.InstallmentStatus = InstallmentStatus.Advance;
+                        else 
+                            installment.InstallmentStatus = InstallmentStatus.Paid;
                     _context.Update(installment);
                     await _context.SaveChangesAsync();
                 }
