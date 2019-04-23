@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Cobranza";
+    
 }
 <h1>Cobranza</h1>
 
@@ -14,7 +15,7 @@
 
     <body>
         <table class="table">
-            <caption>Contenido nutricional por cada 100 g de alimento.</caption>
+            
             <tr> 
                 <th>Alimento</th> 
                 <th>Calorías (kCal)</th> 
@@ -115,12 +116,16 @@
     */
 </style>
 
-<script>
+<input type="button" class="button btn-primary" onclick="LlamarJsonDelServidor();" value="Llamar Json del Server"/>
+<div id="resultado"></div>
+
+<script type="text/javascript">
 
     /*Curso JavaScript aprenderaprogramar.com */
     var editando=false; 
 
     function transformarEnEditable(nodo){
+       
         //El nodo recibido es SPAN
         if (editando == false) {
                 var nodoTd = nodo.parentNode; //Nodo TD
@@ -171,4 +176,27 @@
         window.location.reload();
     }
 
+    function LlamarJsonDelServidor(){
+    $.ajax({
+        type: "POST",
+        traditional: true,
+        async: false,
+        cache: false,
+        url: '@Url.Action("LlamarJson","Collections")',
+        context: document.body,
+        data: { },
+        success: function (result) {                
+            $("#resultado").html('');
+            for (var i = 0; i < result.length; i++) {
+                $("#resultado").append("<li> "+result[i].installmentNumber+ " " + result[i].paymentAmount +" </li>");
+            }
+        },
+        error: function (xhr) {
+            //debugger;
+            console.log(xhr.responseText);
+            alert("Error has occurred..");
+        }
+        });
+    }
+    
 </script>
