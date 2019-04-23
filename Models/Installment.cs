@@ -17,6 +17,7 @@ namespace MvcPicashNetCore.Models
         public int InstallmentNumber { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Prompt ="Fecha de Vencimiento", Name = "Fecha de Vencimiento")]
         public DateTime Duedate { get; set; }
         public InstallmentStatus InstallmentStatus { get; set; }
 
