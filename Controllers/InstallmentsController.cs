@@ -26,14 +26,17 @@ namespace MvcPicashNetCore.Controllers
                                     .Include(x => x.Loan.Customer)
                                     .OrderBy(x => x.Loan.LoanId)
                                     .OrderBy(x => x.InstallmentNumber)
-                                    .Where(x => x.Duedate == DateTime.Today);
+                                    .Where(x => true);
             
             if (!String.IsNullOrEmpty(loanTypeId))
             {
                 picashDbContext = picashDbContext.Where(s => s.Loan.LoanTypeId == loanTypeId);
             }
             if (!String.IsNullOrEmpty(dueDate))
-                picashDbContext = picashDbContext.Where(s => s.Duedate.Date == DateTime.Parse(dueDate).Date);
+            {
+                DateTime fechaRecibida =  DateTime.Parse(dueDate);
+                picashDbContext = picashDbContext.Where(s => s.Duedate.Date == fechaRecibida.Date);
+            }
             else
                 picashDbContext = picashDbContext.Where(s => s.Duedate == DateTime.Today);
             
