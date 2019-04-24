@@ -40,6 +40,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Loan.LoanType.Code)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PaymentAmount)
             </th>
             <th>
@@ -60,7 +63,10 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td contenteditable="true">
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.LoanType.Code)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.PaymentAmount)
             </td>
             <td>

@@ -37,7 +37,8 @@ namespace MvcPicashNetCore.Controllers
             else
                 picashDbContext = picashDbContext.Where(s => s.Duedate == DateTime.Today);
             
-            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", loanTypeId);
+            //ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
 
             return View(await picashDbContext.ToListAsync());
         }
@@ -149,7 +150,14 @@ namespace MvcPicashNetCore.Controllers
                         throw;
                     }
                 }
+
+                installment = await _context.Installments
+                                        .Include (x => x.Loan)
+                                        .FirstOrDefaultAsync (m => m.InstallmentId == installment.InstallmentId);
+
+                ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
                 return RedirectToAction(nameof(Index));
+                
             }
             ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
