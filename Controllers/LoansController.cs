@@ -248,7 +248,7 @@ namespace MvcPicashNetCore.Controllers {
                     new Installment () {
                         InstallmentId = Guid.NewGuid ().ToString (),
                             InstallmentNumber = i,
-                            InstallmentStatus = InstallmentStatus.Pending,
+                            InstallmentStatus = InstallmentStatus.Pendiente,
                             LoanId = Loan.LoanId,
                             Amount = installmentTotalAmount,
                             PaymentAmount = 0,

@@ -27,7 +27,7 @@ namespace MvcPicashNetCore.Models
         public float TotalAmmount { get; set; }
                             
         [Display(Prompt ="Cliente", Name = "Cliente")]
-         [Required(ErrorMessage = "Seleccione el cliente.")]
+        [Required(ErrorMessage = "Seleccione el cliente.")]
         public string CustomerId { get; set; }
         [Display(Prompt ="Cliente", Name = "Cliente")]
        

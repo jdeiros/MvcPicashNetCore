@@ -19,7 +19,7 @@ namespace MvcPicashNetCore.Controllers
         }
 
         // GET: Installments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string loanTypeId, string dueDate)
         {
             var picashDbContext = _context.Installments
                                     .Include(i => i.Loan)
@@ -27,7 +27,19 @@ namespace MvcPicashNetCore.Controllers
                                     .OrderBy(x => x.Loan.LoanId)
                                     .OrderBy(x => x.InstallmentNumber)
                                     .Where(x => x.Duedate == DateTime.Today);
-           
+            
+            if (!String.IsNullOrEmpty(loanTypeId))
+            {
+                picashDbContext = picashDbContext.Where(s => s.Loan.LoanTypeId == loanTypeId);
+            }
+            if (!String.IsNullOrEmpty(dueDate))
+                picashDbContext = picashDbContext.Where(s => s.Duedate.Date == DateTime.Parse(dueDate).Date);
+            else
+                picashDbContext = picashDbContext.Where(s => s.Duedate == DateTime.Today);
+            
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", loanTypeId);
+            //ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
+
             return View(await picashDbContext.ToListAsync());
         }
 
@@ -92,8 +104,8 @@ namespace MvcPicashNetCore.Controllers
             {
                 return NotFound();
             }
-
-            ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
+            installment.PaymentAmount = installment.Amount;
+            //ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
         }
 
@@ -112,14 +124,18 @@ namespace MvcPicashNetCore.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    if(installment.Amount > installment.PaymentAmount)
-                        installment.InstallmentStatus = InstallmentStatus.PartialPayment;
+                {                    
+                    if(installment.PaymentAmount == 0)
+                        installment.InstallmentStatus = InstallmentStatus.C;
                     else
-                        if(installment.Amount < installment.PaymentAmount)
-                            installment.InstallmentStatus = InstallmentStatus.Advance;
-                        else 
-                            installment.InstallmentStatus = InstallmentStatus.Paid;
+                        if(installment.Amount == installment.PaymentAmount)
+                            installment.InstallmentStatus = InstallmentStatus.Pago;
+                        else
+                            if(installment.Amount > installment.PaymentAmount)
+                                installment.InstallmentStatus = InstallmentStatus.Parcial;
+                            else
+                                installment.InstallmentStatus = InstallmentStatus.AD;
+                    
                     _context.Update(installment);
                     await _context.SaveChangesAsync();
                 }
@@ -134,7 +150,14 @@ namespace MvcPicashNetCore.Controllers
                         throw;
                     }
                 }
+
+                installment = await _context.Installments
+                                        .Include (x => x.Loan)
+                                        .FirstOrDefaultAsync (m => m.InstallmentId == installment.InstallmentId);
+
+                ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
                 return RedirectToAction(nameof(Index));
+                
             }
             ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
