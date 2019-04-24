@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using MvcPicashNetCore.Models;
 
@@ -19,26 +20,38 @@ namespace MvcPicashNetCore.Controllers
         }
 
         // GET: Installments
-        public async Task<IActionResult> Index(string loanTypeId, string dueDate)
+        public async Task<IActionResult> Index(string loanTypeId, string dueDate, string routeId)
         {
             var picashDbContext = _context.Installments
                                     .Include(i => i.Loan)
                                     .Include(x => x.Loan.Customer)
                                     .OrderBy(x => x.Loan.LoanId)
                                     .OrderBy(x => x.InstallmentNumber)
-                                    .Where(x => x.Duedate == DateTime.Today);
-            
+                                    .Where(x => true);
+
             if (!String.IsNullOrEmpty(loanTypeId))
             {
                 picashDbContext = picashDbContext.Where(s => s.Loan.LoanTypeId == loanTypeId);
+                ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", loanTypeId);
+            }
+            else
+            {
+                ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
             }
             if (!String.IsNullOrEmpty(dueDate))
+            {
                 picashDbContext = picashDbContext.Where(s => s.Duedate.Date == DateTime.Parse(dueDate).Date);
+                ViewBag.dateFieldToday = dueDate;
+            }
             else
+            {
                 picashDbContext = picashDbContext.Where(s => s.Duedate == DateTime.Today);
-            
-            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", loanTypeId);
-            //ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
+                ViewBag.dateFieldToday = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            if (!String.IsNullOrEmpty(routeId))
+            {
+                picashDbContext = picashDbContext.Where(s => s.Loan.Customer.RouteId == routeId);
+            }
 
             return View(await picashDbContext.ToListAsync());
         }
@@ -96,16 +109,19 @@ namespace MvcPicashNetCore.Controllers
 
             //var installment = await _context.Installments.FindAsync(id);
             var installment = await _context.Installments
-                .Include (x => x.Loan)
+                .Include(x => x.Loan)
                 .Include(x => x.Loan.Customer)
-                .FirstOrDefaultAsync (m => m.InstallmentId == id);
+                .FirstOrDefaultAsync(m => m.InstallmentId == id);
 
             if (installment == null)
             {
                 return NotFound();
             }
             installment.PaymentAmount = installment.Amount;
-            //ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
+
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
+            ViewBag.dateFieldToday = installment.Duedate;
+
             return View(installment);
         }
 
@@ -124,18 +140,18 @@ namespace MvcPicashNetCore.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {                    
-                    if(installment.PaymentAmount == 0)
+                {
+                    if (installment.PaymentAmount == 0)
                         installment.InstallmentStatus = InstallmentStatus.C;
                     else
-                        if(installment.Amount == installment.PaymentAmount)
-                            installment.InstallmentStatus = InstallmentStatus.Pago;
-                        else
-                            if(installment.Amount > installment.PaymentAmount)
-                                installment.InstallmentStatus = InstallmentStatus.Parcial;
-                            else
-                                installment.InstallmentStatus = InstallmentStatus.AD;
-                    
+                        if (installment.Amount == installment.PaymentAmount)
+                        installment.InstallmentStatus = InstallmentStatus.Pago;
+                    else
+                            if (installment.Amount > installment.PaymentAmount)
+                        installment.InstallmentStatus = InstallmentStatus.Parcial;
+                    else
+                        installment.InstallmentStatus = InstallmentStatus.AD;
+
                     _context.Update(installment);
                     await _context.SaveChangesAsync();
                 }
@@ -152,12 +168,26 @@ namespace MvcPicashNetCore.Controllers
                 }
 
                 installment = await _context.Installments
-                                        .Include (x => x.Loan)
-                                        .FirstOrDefaultAsync (m => m.InstallmentId == installment.InstallmentId);
+                                        .Include(x => x.Loan)
+                                        .Include(x => x.Loan.Customer)
+                                        .FirstOrDefaultAsync(m => m.InstallmentId == installment.InstallmentId);
+
 
                 ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
-                return RedirectToAction(nameof(Index));
-                
+                ViewBag.dateFieldToday = installment.Duedate;
+
+                //return RedirectToaction("Installments","Index", routeValues: new { loanTypeId = installment.Loan.LoanTypeId, duedate = installment.Duedate });
+                return RedirectToAction("Index", 
+                                        new RouteValueDictionary(
+                                                    new { 
+                                                            controller = "Installments", 
+                                                            action = "Index", 
+                                                            loanTypeId = installment.Loan.LoanTypeId, 
+                                                            duedate = installment.Duedate.ToString("yyyy-MM-dd"), 
+                                                            RouteDirection = installment.Loan.Customer.RouteId 
+                                                    }));
+                //return RedirectToAction(nameof(Index));
+
             }
             ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
