@@ -113,18 +113,29 @@ namespace MvcPicashNetCore.Controllers
             {
                 try
                 {
-                    if(installment.Amount > installment.PaymentAmount)
-                        installment.InstallmentStatus = InstallmentStatus.Parcial;
-                    else
-                        if(installment.Amount < installment.PaymentAmount && installment.PaymentAmount != 0)
-                            installment.InstallmentStatus = InstallmentStatus.AD;
-                        else
-                            if(installment.Amount == installment.PaymentAmount)
-                                installment.InstallmentStatus = InstallmentStatus.Pago;
-                            else
-                                 if(installment.Amount == 0)
-                                    installment.InstallmentStatus = InstallmentStatus.C;
+                    // if(installment.Amount > installment.PaymentAmount)
+                    //     installment.InstallmentStatus = InstallmentStatus.Parcial;
+                    // else
+                    //     if(installment.Amount < installment.PaymentAmount && installment.PaymentAmount != 0)
+                    //         installment.InstallmentStatus = InstallmentStatus.AD;
+                    //     else
+                    //         if(installment.Amount == installment.PaymentAmount)
+                    //             installment.InstallmentStatus = InstallmentStatus.Pago;
+                    //         else
+                    //              if(installment.PaymentAmount == 0)
+                    //                 installment.InstallmentStatus = InstallmentStatus.C;
 
+                    if(installment.PaymentAmount == 0)
+                        installment.InstallmentStatus = InstallmentStatus.C;
+                    else
+                        if(installment.Amount == installment.PaymentAmount)
+                            installment.InstallmentStatus = InstallmentStatus.Pago;
+                        else
+                            if(installment.Amount > installment.PaymentAmount)
+                                installment.InstallmentStatus = InstallmentStatus.Parcial;
+                            else
+                                installment.InstallmentStatus = InstallmentStatus.AD;
+                    
                     _context.Update(installment);
                     await _context.SaveChangesAsync();
                 }

@@ -28,7 +28,10 @@
             <input type="hidden" asp-for="Duedate" />
 
             <div class="form-group">
-                <label asp-for="PaymentAmount" class="control-label"></label>
+                
+                <!-- <label asp-for="PaymentAmount" class="control-label"></label>
+                @Html.EditorFor(model => model.PaymentAmount) -->
+                <!-- <p></p> -->
                 <input asp-for="PaymentAmount" class="form-control" />
                 <span asp-validation-for="PaymentAmount" class="text-danger"></span>
             </div>
@@ -47,3 +50,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<script type="text/javascript">
+    $.validator.methods.number = function (value, element) {
+        value = floatValue(value);
+        return this.optional(element) || !isNaN(value);
+    }
+    $.validator.methods.range = function (value, element, param) {
+        value = floatValue(value);
+        return this.optional(element) || (value >= param[0] && value <= param[1]);
+    }
+ 
+    function floatValue(value) {
+        return parseFloat(value.replace(",", "."));
+    }  
+</script>
