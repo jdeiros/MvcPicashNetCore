@@ -4,9 +4,10 @@ namespace MvcPicashNetCore.Models
 {
     public enum InstallmentStatus
     {
-        Paid,
-        Pending,
-        Advance,
-        PartialPayment
+        Pago,
+        Pendiente,
+        AD,
+        Parcial,
+        C
     }
 }

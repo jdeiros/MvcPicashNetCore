@@ -10,7 +10,7 @@ namespace MvcPicashNetCore.Models
         public string LoanId { get; set; }
         public Loan Loan { get; set; }
         
-        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
         [Display(Prompt ="Monto Total", Name = "Monto Total")]
         public float Amount { get; set; }
         
@@ -21,8 +21,9 @@ namespace MvcPicashNetCore.Models
         public DateTime Duedate { get; set; }
         public InstallmentStatus InstallmentStatus { get; set; }
 
-        [DataType(DataType.Currency)]
+        
         [Display(Prompt ="Monto de pago", Name = "Monto de pago")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
         public float PaymentAmount { get; set; }
         public Installment()
         {

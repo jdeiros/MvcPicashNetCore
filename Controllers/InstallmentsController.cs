@@ -92,8 +92,8 @@ namespace MvcPicashNetCore.Controllers
             {
                 return NotFound();
             }
-
-            ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
+            installment.PaymentAmount = installment.Amount;
+            //ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
             return View(installment);
         }
 
@@ -114,12 +114,17 @@ namespace MvcPicashNetCore.Controllers
                 try
                 {
                     if(installment.Amount > installment.PaymentAmount)
-                        installment.InstallmentStatus = InstallmentStatus.PartialPayment;
+                        installment.InstallmentStatus = InstallmentStatus.Parcial;
                     else
-                        if(installment.Amount < installment.PaymentAmount)
-                            installment.InstallmentStatus = InstallmentStatus.Advance;
-                        else 
-                            installment.InstallmentStatus = InstallmentStatus.Paid;
+                        if(installment.Amount < installment.PaymentAmount && installment.PaymentAmount != 0)
+                            installment.InstallmentStatus = InstallmentStatus.AD;
+                        else
+                            if(installment.Amount == installment.PaymentAmount)
+                                installment.InstallmentStatus = InstallmentStatus.Pago;
+                            else
+                                 if(installment.Amount == 0)
+                                    installment.InstallmentStatus = InstallmentStatus.C;
+
                     _context.Update(installment);
                     await _context.SaveChangesAsync();
                 }
