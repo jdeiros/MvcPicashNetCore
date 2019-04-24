@@ -19,7 +19,7 @@ namespace MvcPicashNetCore.Controllers
         }
 
         // GET: Installments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string loanTypeId, string dueDate)
         {
             var picashDbContext = _context.Installments
                                     .Include(i => i.Loan)
@@ -27,7 +27,18 @@ namespace MvcPicashNetCore.Controllers
                                     .OrderBy(x => x.Loan.LoanId)
                                     .OrderBy(x => x.InstallmentNumber)
                                     .Where(x => x.Duedate == DateTime.Today);
-           
+            
+            if (!String.IsNullOrEmpty(loanTypeId))
+            {
+                picashDbContext = picashDbContext.Where(s => s.Loan.LoanTypeId == loanTypeId);
+            }
+            if (!String.IsNullOrEmpty(dueDate))
+                picashDbContext = picashDbContext.Where(s => s.Duedate.Date == DateTime.Parse(dueDate).Date);
+            else
+                picashDbContext = picashDbContext.Where(s => s.Duedate == DateTime.Today);
+            
+            ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code");
+
             return View(await picashDbContext.ToListAsync());
         }
 
@@ -112,19 +123,7 @@ namespace MvcPicashNetCore.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    // if(installment.Amount > installment.PaymentAmount)
-                    //     installment.InstallmentStatus = InstallmentStatus.Parcial;
-                    // else
-                    //     if(installment.Amount < installment.PaymentAmount && installment.PaymentAmount != 0)
-                    //         installment.InstallmentStatus = InstallmentStatus.AD;
-                    //     else
-                    //         if(installment.Amount == installment.PaymentAmount)
-                    //             installment.InstallmentStatus = InstallmentStatus.Pago;
-                    //         else
-                    //              if(installment.PaymentAmount == 0)
-                    //                 installment.InstallmentStatus = InstallmentStatus.C;
-
+                {                    
                     if(installment.PaymentAmount == 0)
                         installment.InstallmentStatus = InstallmentStatus.C;
                     else

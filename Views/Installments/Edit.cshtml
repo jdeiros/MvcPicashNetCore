@@ -51,7 +51,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-
+<!-- esto soluciona el problema de validacion al ingresar decimales en los pagos -->
 <script type="text/javascript">
     $.validator.methods.number = function (value, element) {
         value = floatValue(value);
