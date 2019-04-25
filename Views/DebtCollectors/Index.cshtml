@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Crear Nuevo Cobrador</a>
 </p>
-<table class="table">
+<table class="table  table-sm  table-responsive">
     <thead>
         <tr>
             <th>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.OptionalContact)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DebtCollectorId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DebtCollectorId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DebtCollectorId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.DebtCollectorId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Details" asp-route-id="@item.DebtCollectorId"><img src="~/images/details.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Delete" asp-route-id="@item.DebtCollectorId"><img src="~/images/delete.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
             </td>
         </tr>
 }

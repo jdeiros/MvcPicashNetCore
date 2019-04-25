@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Crear Nueva Semana de Cobranza</a>
 </p>
-<table class="table">
+<table class="table  table-sm table-responsive">
     <thead>
         <tr>
             <th>
@@ -79,10 +79,10 @@
                 @Html.DisplayFor(modelItem => item.Holiday)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CollectionWeekId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CollectionWeekId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CollectionWeekId">Delete</a> |
-                <a asp-action="ViewAsPDF" asp-route-id="@item.CollectionWeekId" target="blank">Print</a> |
+                <a asp-action="Edit" asp-route-id="@item.CollectionWeekId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Details" asp-route-id="@item.CollectionWeekId"><img src="~/images/details.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Delete" asp-route-id="@item.CollectionWeekId"><img src="~/images/delete.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="ViewAsPDF" asp-route-id="@item.CollectionWeekId" target="blank"><img src="~/images/print.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
                 
             </td>
         </tr>

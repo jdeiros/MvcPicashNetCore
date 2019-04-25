@@ -1,7 +1,7 @@
 @model IEnumerable<MvcPicashNetCore.Models.Loan>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Prestamos";
 }
 
 <h1>Préstamos</h1>
@@ -9,17 +9,20 @@
 <p>
     <a asp-action="Create">Crear Préstamo</a>
 </p>
-<table class="table table-sm">
+<table class="table table-sm table-responsive">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Customer.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreationDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateFrom)
+             <th>
+                @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTo)
+                @Html.DisplayNameFor(model => model.LoanStatus)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalAmmount)
@@ -27,15 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.LoanType.InterestPercentage)
             </th>
-             <th>
-                @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LoanStatus)
-            </th>
+            
+            
+            
             <th></th>
         </tr>
     </thead>
@@ -43,13 +40,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Customer.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.CreationDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateFrom)
+                @Html.DisplayFor(modelItem => item.LoanType.InstallmentsAmount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateTo)
+                @Html.DisplayFor(modelItem => item.LoanStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalAmmount)
@@ -58,19 +58,10 @@
                 @Html.DisplayFor(modelItem => item.LoanType.InterestPercentage)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoanType.InstallmentsAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.LoanId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LoanId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LoanId">Delete</a> |
-                <a asp-action="PrintAsPdf" asp-route-id="@item.LoanId" target="blank">Print</a>
+                <a asp-action="Edit" asp-route-id="@item.LoanId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Details" asp-route-id="@item.LoanId"><img src="~/images/details.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanId"><img src="~/images/delete.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="PrintAsPdf" asp-route-id="@item.LoanId" target="blank"><img src="~/images/print.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
             </td>
         </tr>
 }
