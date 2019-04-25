@@ -11,43 +11,39 @@
 
 <div class="row">
     
-    <div class="col-md-4">
+    <div class="col-md-12">
 
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
-            <div class="form-group">
-                <label asp-for="TotalAmmount" class="control-label"></label>
-                <input asp-for="TotalAmmount" class="form-control" />
-                <span asp-validation-for="TotalAmmount" class="text-danger"></span>
-            </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="TotalAmmount" class="control-label"></label>
+                            <input asp-for="TotalAmmount" class="form-control" />
+                            <span asp-validation-for="TotalAmmount" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="CustomerId" class="control-label"></label>
+                            <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="LoanTypeId" class="control-label"></label>
+                            <select asp-for="LoanTypeId" class ="form-control" asp-items="ViewBag.LoanTypeId"></select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <p></p><p></p>
+                            <input type="submit" value="Crear Prestamo" class="btn btn-danger" />
+                            <!-- @Html.ActionLink("Simulador", "Loans", "Simulation", null, new {miAtributo ="Valor1", @class = "btn btn-danger"}) -->
+                        </div>
+                    </div>
+                </div>
             
-            
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="LoanTypeId" class="control-label"></label>
-                <select asp-for="LoanTypeId" class ="form-control" asp-items="ViewBag.LoanTypeId"></select>
-            </div>
-            <!-- <div class="form-group">
-                <label asp-for="LoanStatus" class="control-label"></label>
-                @Html.DropDownList(
-                    "LoanStatus", @Html.GetEnumSelectList<MvcPicashNetCore.Models.LoanStatus>(),
-                        "Seleccione estado",
-                        new {@class = "form-control"}
-                )
-
-            </div> -->
-            
-            <div class="form-group">
-                
-                <input type="submit" value="Crear Prestamo" class="btn btn-danger" />
-                <!-- @Html.ActionLink("Simulador", "Loans", "Simulation", null, new {miAtributo ="Valor1", @class = "btn btn-danger"}) -->
-                
-            </div>
         </form>
 
         <!-- <form asp-controller="Loans" asp-action="Simulate" method="get">
@@ -58,130 +54,98 @@
         
     </div>
 
-        <div class="col-md-8">
-            <div class="container">
-                <div class="jumbotron">
-                    
-                    <div>
-                        <h3>Datos del Préstamo</h3>
-                        <hr />
-                        <dl class="row">
-                            <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.CreationDate)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.CreationDate)
-                            </dd>
-                            <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.LoanStatus)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.LoanStatus)
-                            </dd>
-                            <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.DateFrom)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.DateFrom)
-                            </dd>  
-                            <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.DateTo)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.DateTo)
-                            </dd>                            
-                             <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.TotalAmmount)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.TotalAmmount)
-                            </dd>  
-                             <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.LoanType.InterestPercentage)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.LoanType.InterestPercentage)
-                            </dd>  
-                            <dt class = "col-sm-4">
-                                
-                                A Cobrar 
-                            </dt>
-                            <dd class = "col-sm-8">
-                                
-                                @ViewBag.LoanTotalAmountWithInterest
-                            </dd> 
 
-                             <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.Customer.Name)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.Customer.Name)
-                            </dd>  
-                             <dt class = "col-sm-4">
-                                @Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount)
-                            </dt>
-                            <dd class = "col-sm-8">
-                                @Html.DisplayFor(model => model.LoanType.InstallmentsAmount)
-                            </dd>                         
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-12">
-            <div class="container">
-                <div class="jumbotron">
-                    <div>
-                        <h3>Tabla de amortización</h3>
+    <div class="container-sm col-md-12">
+
+
+        <div class="row">
+            <legend>Datos del préstamo: @Html.DisplayFor(model => model.Customer.Name) @Html.DisplayFor(model => model.Customer.SurName)</legend>
+            <p>A Cobrar: @ViewBag.LoanTotalAmountWithInterest</p>
+            <table class="table table-responsive text-nowrap">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.CreationDate):  @Html.DisplayFor(model => model.CreationDate)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.DateFrom):  @Html.DisplayFor(model => model.DateFrom)</li></p>
+                        </td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.DateTo): @Html.DisplayFor(model => model.DateTo)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount): @Html.DisplayFor(model => model.LoanType.InstallmentsAmount)</li></p>
                         
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Cuota Nro.
-                                    </th>
-                                    
-                                    <th>
-                                        Monto a pagar
-                                    </th>
-                                   
-                                    <th>
-                                        Fecha de vencimiento
-                                    </th>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.TotalAmmount): @Html.DisplayFor(model => model.TotalAmmount)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanStatus): @Html.DisplayFor(model => model.LoanStatus)</li></p>
+                        </td>
+                        <td>    
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InterestPercentage): @Html.DisplayFor(model => model.LoanType.InterestPercentage)</li></p>
+                            
+                        </td>
+                        <td></td>                                         
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+
+
+
+        
+        
+        
+            <div class="container col-md-12">
+                
+                <div class="table-responsive text-nowrap">
+                   <legend>Tabla de amortización</legend>
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Cuota Nro.
+                                </th>
                                 
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @{
-                                if(ViewBag.MensajeCuotas != null)  
-                                {  
-                                    @foreach (var item in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas) 
-                                    {
-                                        <tr>
-                                            <td>
-                                                @item.InstallmentNumber
-                                            </td>
-                                            
-                                            <td>
-                                                @String.Format("{0:C}", @item.Amount)
-                                            </td>
-                                            
-                                            <td>
-                                                @item.Duedate.ToString("dd/MM/yyyy")
-                                            </td>
-                                        </tr>
-                                    }
+                                <th>
+                                    Monto a pagar
+                                </th>
+                                
+                                <th>
+                                    Fecha de vencimiento
+                                </th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @{
+                            if(ViewBag.MensajeCuotas != null)  
+                            {  
+                                @foreach (var item in (List<MvcPicashNetCore.Models.Installment>) @ViewBag.MensajeCuotas) 
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.InstallmentNumber
+                                        </td>
+                                        
+                                        <td>
+                                            @String.Format("{0:C}", @item.Amount)
+                                        </td>
+                                        
+                                        <td>
+                                            @item.Duedate.ToString("dd/MM/yyyy")
+                                        </td>
+                                    </tr>
                                 }
                             }
-                            </tbody>
-                        </table>
-                    </div>
+                        }
+                        </tbody>
+                    </table>
                 </div>
+                
             </div>
         </div>        
     
-</div>
+
 
 <div>
     <a asp-action="Index">Volver al Listado</a>

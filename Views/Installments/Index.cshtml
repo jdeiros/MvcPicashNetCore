@@ -13,18 +13,23 @@
 
 <form asp-controller="Installments" asp-action="Index" method="get">
     <p>
-                        
-        <!-- <select asp-for="LoanTypes" asp-items="ViewBag.LoanTypeId"></select>
-        <option value="">Todos</option> -->
-
-        <div class="editor-field">
-            @Html.DropDownList("loanTypeId", (SelectList) ViewData["LoanTypeId"], "Todos")            
-            
-            @Html.TextBox("dueDate", ViewData["dateFieldToday"], new { type = "date" })
-            
-            <input type="submit" value="Filtrar" />
-        </div>
         
+@using(Html.BeginForm(null, null, FormMethod.Get))
+{
+    <fieldset>
+        
+        @Html.Label("tprestamo", "T. Prestamo:")
+        @Html.DropDownList("loanTypeId", (SelectList) ViewData["LoanTypeId"], "Todos")
+       
+        @Html.Label("fechaVenc", "F. Venc.")
+        @Html.TextBox("dueDate", ViewData["dateFieldToday"], new { type = "date" })
+
+        <!-- @Html.Label("maxHijos", "Hijos máx:")
+        @Html.TextBox("maxHijos" ) -->
+ 
+        <input type="image" value="Buscar"  src="~/images/search.svg" alt="Crediflash" class="img-responsive img-sm" style="width:26px;height:26px;"/>
+    </fieldset>
+}
 
         <!-- <div class="form-group">
                 <label asp-for="Birthdate" class="control-label"></label>
