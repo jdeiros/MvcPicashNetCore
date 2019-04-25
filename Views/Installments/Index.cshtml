@@ -36,7 +36,7 @@
     </p>
 </form>
 
-<table class="table">
+<table class="table table-responsive">
     <thead>
         <tr>
             <th>
@@ -44,6 +44,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Loan.Customer.Name) 
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan.Customer.SurName) 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentAmount)
@@ -70,7 +73,10 @@
                 @Html.DisplayFor(modelItem => item.Loan.LoanType.Code)
             </td>
              <td>
-                @Html.DisplayFor(modelItem => item.Loan.Customer.Name) @Html.DisplayFor(modelItem => item.Loan.Customer.SurName)
+                @Html.DisplayFor(modelItem => item.Loan.Customer.Name) 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loan.Customer.SurName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentAmount)
@@ -88,7 +94,7 @@
                 @Html.DisplayFor(modelItem => item.InstallmentStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.InstallmentId">Editar</a>
+                <a asp-action="Edit" asp-route-id="@item.InstallmentId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
                 <!-- <a asp-action="Details" asp-route-id="@item.InstallmentId">Details</a> | -->
                 <!-- <a asp-action="Delete" asp-route-id="@item.InstallmentId">Delete</a> -->
             </td>

@@ -38,7 +38,7 @@ namespace MvcPicashNetCore.Models
        
         public List<Installment> Installments { get; set; }
 
-        [Display(Prompt ="Estado del Préstamo", Name = "Estado del Préstamo")]
+        [Display(Prompt ="Status", Name = "Status")]
         public LoanStatus LoanStatus { get; set; }
 
         public string LoanTypeId { get; set; }

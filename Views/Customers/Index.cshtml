@@ -17,26 +17,18 @@
     </p>
 </form>
 
-<table class="table table-sm table-striped">
+<table class="table table-sm table-responsive">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SurName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Birthdate)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.CellPhone)
-            </th>
+            </th>            
             <th>
-                @Html.DisplayNameFor(model => model.OptionalContact)
-            </th>
-            <th>
-                Dirección Principal
+                Dirección Ppal.
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Route.Code)
@@ -49,19 +41,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.SurName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthdate)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.CellPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionalContact)
-            </td>
+            </td>           
             <td>
             @{
                 foreach (Address addr in item.Addresses.Where(a => a.IsMain == true))
@@ -69,14 +54,11 @@
                     <table class="table ">
                         @if(addr.IsMain == true)
                          {
-                             <tr>
-                                 <td>
-                             @Html.DisplayFor(modelItem => addr.IsMain) 
-                             </td>
-                             <td>
+                             <!-- <tr><td>@Html.DisplayFor(modelItem => addr.IsMain)</td> -->
+                             <!-- <td> -->
                              @Html.DisplayFor(modelItem => addr.Description)
-                            </td>
-                             </tr>
+                            <!-- </td> -->
+                             <!-- </tr> -->
                          }
                     </table>
                 }
@@ -86,9 +68,9 @@
                 @Html.DisplayFor(modelItem => item.Route.Code)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.CustomerId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Details" asp-route-id="@item.CustomerId"><img src="~/images/details.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
+                <a asp-action="Delete" asp-route-id="@item.CustomerId"><img src="~/images/delete.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
             </td>
         </tr>
 }
