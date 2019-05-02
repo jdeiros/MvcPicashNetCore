@@ -1,0 +1,246 @@
+@model MvcPicashNetCore.Models.Loan
+
+@{
+    ViewData["Title"] = "Calendario";
+    Layout = null;
+    var totalWithInterest = Model.TotalAmmount + Model.TotalAmmount * Model.LoanType.InterestPercentage / 100;
+    var LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Model.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", Model.Installments.FirstOrDefault().Amount) + " Cada Una.";
+    var DebtCollectorPhone = Model.Customer.Route.DebtCollector.CellPhone;
+    var DebtCollectorName = Model.Customer.Route.DebtCollector.Name + " " + Model.Customer.Route.DebtCollector.SurName;
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Crediflash</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+    
+    <p class="text-right">Fecha: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+    
+
+    
+    <div class="container-sm col-md-12">
+
+
+        <div class="row">
+            <legend>Datos del préstamo: @Html.DisplayFor(model => model.Customer.Name) @Html.DisplayFor(model => model.Customer.SurName)</legend>
+            <p>A Cobrar: @LoanTotalAmountWithInterest </p>
+            <table class="table table-responsive text-nowrap">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.CreationDate):  @Html.DisplayFor(model => model.CreationDate)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.DateFrom):  @Html.DisplayFor(model => model.DateFrom)</li></p>
+                        </td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.DateTo): @Html.DisplayFor(model => model.DateTo)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount): @Html.DisplayFor(model => model.LoanType.InstallmentsAmount)</li></p>
+                        
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.TotalAmmount): @Html.DisplayFor(model => model.TotalAmmount)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanStatus): @Html.DisplayFor(model => model.LoanStatus)</li></p>
+                        </td>
+                        <td>    
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InterestPercentage): @Html.DisplayFor(model => model.LoanType.InterestPercentage)</li></p>
+                            
+                        </td>
+                        <td></td>                                         
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+
+    <hr /> 
+
+    <div class="col-md-12">
+            
+        <div class="container">
+
+            <p>Cobrador: @DebtCollectorName, telefono: @DebtCollectorPhone</p>
+            
+            <table class="table">
+                                        
+                <tbody>
+                    @{
+                        if(Model.Installments != null)  
+                        {  
+                            var count = 0;
+                            @foreach (var item in (List<MvcPicashNetCore.Models.Installment>) @Model.Installments) 
+                            {
+                                if(count%4 != 0){
+                                    
+                                    <td>    
+                                        @item.InstallmentNumber .                                        
+                                        @item.Duedate.ToString("dd/MM/yyyy")
+                                        @{
+                                            if(@item.PaymentAmount != 0){
+                                                @String.Format("{0:C}", @item.PaymentAmount)
+                                            }
+                                            else{
+                                                @String.Format("{0}", "......")
+                                            }
+                                        }
+                                    </td>
+                                    
+                                }else{
+                                    <tr></tr>
+                                    <td>    
+                                        @item.InstallmentNumber .                                        
+                                        @item.Duedate.ToString("dd/MM/yyyy")
+                                        @{
+                                            if(@item.PaymentAmount != 0){
+                                                @String.Format("{0:C}", @item.PaymentAmount)
+                                            }
+                                            else{
+                                                @String.Format("{0}", "......")
+                                            }
+                                        }
+                                    </td>
+                                }
+                                count++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <hr/>
+
+
+    <div class="container-sm col-md-12">
+
+
+        <div class="row">
+            <legend>Datos del préstamo: @Html.DisplayFor(model => model.Customer.Name) @Html.DisplayFor(model => model.Customer.SurName)</legend>
+            <p>A Cobrar: @LoanTotalAmountWithInterest </p>
+            <table class="table table-responsive text-nowrap">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.CreationDate):  @Html.DisplayFor(model => model.CreationDate)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.DateFrom):  @Html.DisplayFor(model => model.DateFrom)</li></p>
+                        </td>
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.DateTo): @Html.DisplayFor(model => model.DateTo)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InstallmentsAmount): @Html.DisplayFor(model => model.LoanType.InstallmentsAmount)</li></p>
+                        
+                        <td>
+                            <p><li>@Html.DisplayNameFor(model => model.TotalAmmount): @Html.DisplayFor(model => model.TotalAmmount)</li></p>
+                            <p><li>@Html.DisplayNameFor(model => model.LoanStatus): @Html.DisplayFor(model => model.LoanStatus)</li></p>
+                        </td>
+                        <td>    
+                            <p><li>@Html.DisplayNameFor(model => model.LoanType.InterestPercentage): @Html.DisplayFor(model => model.LoanType.InterestPercentage)</li></p>
+                            
+                        </td>
+                        <td></td>                                         
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+
+    <hr /> 
+    
+    <div class="col-md-12">
+            
+        <div class="container">
+
+            <p>Cobrador: @DebtCollectorName, telefono: @DebtCollectorPhone</p>
+            
+            <table class="table">
+                                        
+                <tbody>
+                    @{
+                        if(Model.Installments != null)  
+                        {  
+                            var count = 0;
+                            @foreach (var item in (List<MvcPicashNetCore.Models.Installment>) @Model.Installments) 
+                            {
+                                if(count%4 != 0){
+                                    
+                                    <td>    
+                                        @item.InstallmentNumber .                                        
+                                        @item.Duedate.ToString("dd/MM/yyyy")
+                                        @{
+                                            if(@item.PaymentAmount != 0){
+                                                @String.Format("{0:C}", @item.PaymentAmount)
+                                            }
+                                            else{
+                                                @String.Format("{0}", "......")
+                                            }
+                                        }
+                                    </td>
+                                    
+                                }else{
+                                    <tr></tr>
+                                    <td>    
+                                        @item.InstallmentNumber .                                        
+                                        @item.Duedate.ToString("dd/MM/yyyy")
+                                        @{
+                                            if(@item.PaymentAmount != 0){
+                                                @String.Format("{0:C}", @item.PaymentAmount)
+                                            }
+                                            else{
+                                                @String.Format("{0}", "......")
+                                            }
+                                        }
+                                    </td>
+                                }
+                                count++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>            
+                
+        </div>
+    </div>
+    
+    <hr /> 
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2019 - Crediflash - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+
+
+<environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+    </script>
+</environment>
+<script src="~/js/site.js" asp-append-version="true"></script>

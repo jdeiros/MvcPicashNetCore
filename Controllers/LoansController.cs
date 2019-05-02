@@ -58,15 +58,20 @@ namespace MvcPicashNetCore.Controllers {
                 .Include(p => p.LoanType)
                 .Include(p => p.Installments)
                 .Include(p => p.Customer.Addresses)
+                .Include(p => p.Customer.Route)
+                .Include(p => p.Customer.Route.DebtCollector)
+                .Include(p => p.Customer.Route.DebtCollector)
                 .FirstOrDefaultAsync (m => m.LoanId == id);
             if (Loan == null) {
                 return NotFound ();
             }
             Loan.Installments = Loan.Installments.OrderBy(x => x.InstallmentNumber).ToList();
-            var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
-            ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
             
-            return new ViewAsPdf("PrintAsPdf", Loan); 
+            //comento pq las variables viewBag llegan en null, lo calculo en la vista
+            //var totalWithInterest = Loan.TotalAmmount + Loan.TotalAmmount * Loan.LoanType.InterestPercentage / 100;
+            //ViewBag.LoanTotalAmountWithInterest = String.Format ("{0:C}", totalWithInterest) + " en " + Loan.LoanType.InstallmentsAmount + " Cuotas de " + String.Format ("{0:C}", GetInstallmentTotalAmount (Loan)) + " Cada Una.";
+            
+            return new ViewAsPdf("PrintAsPdf.1", Loan); 
             //return View (Loan);
         }
         // GET: Loans/Create
