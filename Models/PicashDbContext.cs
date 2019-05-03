@@ -11,6 +11,7 @@ namespace MvcPicashNetCore.Models
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Zone> Zones { get; set; }
         public DbSet<DebtCollector> DebtCollectors { get; set; }
         public DbSet<Installment> Installments { get; set; }
         public DbSet<Loan> Loans { get; set; }
@@ -27,15 +28,43 @@ namespace MvcPicashNetCore.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            var debtCollector = new DebtCollector
-            {
-                Birthdate = Convert.ToDateTime("12/4/1980 12:10:15 PM", new CultureInfo("en-US")),
-                DebtCollectorId = Guid.NewGuid().ToString(),
-                CellPhone = "+54 9 11 5521 3345",
-                Name = "Juan",
-                SurName = "Perez",
-                OptionalContact = "juanperez@perezcompany.com"
-            };
+
+            List<Zone> zones = new List<Zone>();
+            zones.Add(
+             new Zone{ 
+                ZoneId = Guid.NewGuid().ToString(),
+                Code = "TOR",
+                Name = "Tortuguitas, Malvinas Argentinas, Bs. As",
+             });
+            zones.Add(
+             new Zone{ 
+                ZoneId = Guid.NewGuid().ToString(),
+                Code = "GAR",
+                Name = "Garin, Escobar, Bs. As",
+             });
+            List<DebtCollector> debtCollectors = new List<DebtCollector>();
+            debtCollectors.Add(
+                new DebtCollector{
+                                    Birthdate = Convert.ToDateTime("12/4/1980 12:10:15 PM", new CultureInfo("en-US")),
+                                    DebtCollectorId = Guid.NewGuid().ToString(),
+                                    CellPhone = "115521-3345",
+                                    Name = "Martín",
+                                    SurName = "Gomez",
+                                    OptionalContact = "martin@outlook.com"
+                                    
+                                }
+            );
+            debtCollectors.Add(
+                new DebtCollector{
+                                    Birthdate = Convert.ToDateTime("12/12/1987 12:10:15 PM", new CultureInfo("en-US")),
+                                    DebtCollectorId = Guid.NewGuid().ToString(),
+                                    CellPhone = "115521-2555",
+                                    Name = "Gabriel",
+                                    SurName = "Rojo",
+                                    OptionalContact = "Gabriel@rojo.com"
+                                }
+            );
+            
 
             var collectionWeek = new CollectionWeek()
             {
@@ -60,7 +89,13 @@ namespace MvcPicashNetCore.Models
             };
 
             List<LoanType> loanTypes = LoadLoanTypes(collectionWeek);
-            var route = new Route() { RouteId = Guid.NewGuid().ToString(), DebtCollectorId = debtCollector.DebtCollectorId, Code = "TOR", Name = "Tortuguitas" };
+            var route = new Route() { 
+                                        RouteId = Guid.NewGuid().ToString(), 
+                                        DebtCollectorId = debtCollectors.FirstOrDefault().DebtCollectorId, 
+                                        Code = "ClientesA", 
+                                        Name = "Lista Clientes A" 
+                                    };
+            
             List<Customer> customers = GenerateRandomCustomers(route, 50);
             List<Address> addresses = LoadAddresses(customers);
 
@@ -68,7 +103,10 @@ namespace MvcPicashNetCore.Models
 
             modelBuilder.Entity<CollectionWeek>().HasData(collectionWeek);
             modelBuilder.Entity<Holyday>().HasData(holiday);
-            modelBuilder.Entity<DebtCollector>().HasData(debtCollector);
+
+            modelBuilder.Entity<Zone>().HasData(zones.ToArray());
+            modelBuilder.Entity<DebtCollector>().HasData(debtCollectors.ToArray());
+
             modelBuilder.Entity<Route>().HasData(route);
             modelBuilder.Entity<Customer>().HasData(customers.ToArray());
             modelBuilder.Entity<Address>().HasData(addresses.ToArray());
