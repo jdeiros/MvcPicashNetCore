@@ -9,22 +9,22 @@ using MvcPicashNetCore.Models;
 
 namespace MvcPicashNetCore.Controllers
 {
-    public class DebtCollectorsController : Controller
+    public class ZonesController : Controller
     {
         private readonly PicashDbContext _context;
 
-        public DebtCollectorsController(PicashDbContext context)
+        public ZonesController(PicashDbContext context)
         {
             _context = context;
         }
 
-        // GET: DebtCollectors
+        // GET: Zones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DebtCollectors.ToListAsync());
+            return View(await _context.Zones.ToListAsync());
         }
 
-        // GET: DebtCollectors/Details/5
+        // GET: Zones/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -32,40 +32,39 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var debtCollector = await _context.DebtCollectors
-                .FirstOrDefaultAsync(m => m.DebtCollectorId == id);
-            if (debtCollector == null)
+            var zone = await _context.Zones
+                .FirstOrDefaultAsync(m => m.ZoneId == id);
+            if (zone == null)
             {
                 return NotFound();
             }
 
-            return View(debtCollector);
+            return View(zone);
         }
 
-        // GET: DebtCollectors/Create
+        // GET: Zones/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: DebtCollectors/Create
+        // POST: Zones/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DebtCollectorId,Name,SurName,Birthdate,CellPhone,OptionalContact,ZoneId")] DebtCollector debtCollector)
+        public async Task<IActionResult> Create([Bind("ZoneId,Code,Name")] Zone zone)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(debtCollector);
+                _context.Add(zone);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ZoneId"] = new SelectList(_context.Zones, "ZoneId", "Code", debtCollector.ZoneId);
-            return View(debtCollector);
+            return View(zone);
         }
 
-        // GET: DebtCollectors/Edit/5
+        // GET: Zones/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -73,23 +72,22 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var debtCollector = await _context.DebtCollectors.FindAsync(id);
-            if (debtCollector == null)
+            var zone = await _context.Zones.FindAsync(id);
+            if (zone == null)
             {
                 return NotFound();
             }
-            ViewData["ZoneId"] = new SelectList(_context.Zones, "ZoneId", "Code", debtCollector.ZoneId);
-            return View(debtCollector);
+            return View(zone);
         }
 
-        // POST: DebtCollectors/Edit/5
+        // POST: Zones/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("DebtCollectorId,Name,SurName,Birthdate,CellPhone,OptionalContact,ZoneId")] DebtCollector debtCollector)
+        public async Task<IActionResult> Edit(string id, [Bind("ZoneId,Code,Name")] Zone zone)
         {
-            if (id != debtCollector.DebtCollectorId)
+            if (id != zone.ZoneId)
             {
                 return NotFound();
             }
@@ -98,12 +96,12 @@ namespace MvcPicashNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(debtCollector);
+                    _context.Update(zone);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DebtCollectorExists(debtCollector.DebtCollectorId))
+                    if (!ZoneExists(zone.ZoneId))
                     {
                         return NotFound();
                     }
@@ -114,11 +112,10 @@ namespace MvcPicashNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ZoneId"] = new SelectList(_context.Zones, "ZoneId", "Code", debtCollector.ZoneId);            
-            return View(debtCollector);
+            return View(zone);
         }
 
-        // GET: DebtCollectors/Delete/5
+        // GET: Zones/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -126,30 +123,30 @@ namespace MvcPicashNetCore.Controllers
                 return NotFound();
             }
 
-            var debtCollector = await _context.DebtCollectors
-                .FirstOrDefaultAsync(m => m.DebtCollectorId == id);
-            if (debtCollector == null)
+            var zone = await _context.Zones
+                .FirstOrDefaultAsync(m => m.ZoneId == id);
+            if (zone == null)
             {
                 return NotFound();
             }
 
-            return View(debtCollector);
+            return View(zone);
         }
 
-        // POST: DebtCollectors/Delete/5
+        // POST: Zones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var debtCollector = await _context.DebtCollectors.FindAsync(id);
-            _context.DebtCollectors.Remove(debtCollector);
+            var zone = await _context.Zones.FindAsync(id);
+            _context.Zones.Remove(zone);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DebtCollectorExists(string id)
+        private bool ZoneExists(string id)
         {
-            return _context.DebtCollectors.Any(e => e.DebtCollectorId == id);
+            return _context.Zones.Any(e => e.ZoneId == id);
         }
     }
 }
