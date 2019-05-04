@@ -47,7 +47,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: Routes/Create
         public IActionResult Create()
         {
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "Name");
+            ViewData["DebtCollectorId"] = new SelectList(LoadListForDebtCollectorInCombo(), "Id", "Name");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace MvcPicashNetCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "Name", route.DebtCollectorId);
+            ViewData["DebtCollectorId"] = new SelectList(LoadListForDebtCollectorInCombo(), "Id", "Name", route.DebtCollectorId);
             return View(route);
         }
 
@@ -81,8 +81,26 @@ namespace MvcPicashNetCore.Controllers
             {
                 return NotFound();
             }
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "Name", route.DebtCollectorId);
+            
+            ViewData["DebtCollectorId"] = new SelectList(LoadListForDebtCollectorInCombo(), "Id", "Name", route.DebtCollectorId);
             return View(route);
+        }
+
+        private List<object> LoadListForDebtCollectorInCombo()
+        {
+            List<object> debtCollectorsForCombo = new List<object>();
+            foreach (var debtCollector in _context.DebtCollectors)
+            {
+                debtCollectorsForCombo.Add(
+                    new
+                    {
+                        Id = debtCollector.DebtCollectorId,
+                        Name = debtCollector.Name + " " + debtCollector.SurName
+                    }
+                );
+            }
+
+            return debtCollectorsForCombo;
         }
 
         public IActionResult RedirectToInstallments(string id)
@@ -121,7 +139,7 @@ namespace MvcPicashNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DebtCollectorId"] = new SelectList(_context.DebtCollectors, "DebtCollectorId", "DebtCollectorId", route.DebtCollectorId);
+            ViewData["DebtCollectorId"] = new SelectList(LoadListForDebtCollectorInCombo(), "Id", "Name", route.DebtCollectorId);
             return View(route);
         }
 
