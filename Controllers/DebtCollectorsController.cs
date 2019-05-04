@@ -21,7 +21,8 @@ namespace MvcPicashNetCore.Controllers
         // GET: DebtCollectors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DebtCollectors.ToListAsync());
+            var picashDbContext = _context.DebtCollectors.Include (d => d.Zone);
+            return View(await picashDbContext.ToListAsync());
         }
 
         // GET: DebtCollectors/Details/5
@@ -45,6 +46,7 @@ namespace MvcPicashNetCore.Controllers
         // GET: DebtCollectors/Create
         public IActionResult Create()
         {
+            ViewData["ZoneId"] = new SelectList(_context.Zones, "ZoneId", "Code");
             return View();
         }
 
@@ -61,6 +63,7 @@ namespace MvcPicashNetCore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["ZoneId"] = new SelectList(_context.Zones, "ZoneId", "Code", debtCollector.ZoneId);
             return View(debtCollector);
         }

@@ -28,6 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.OptionalContact)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zone.Code)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -48,6 +51,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OptionalContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zone.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DebtCollectorId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a> |
