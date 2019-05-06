@@ -34,6 +34,8 @@
     </fieldset>
 }
 
+
+
         <!-- <div class="form-group">
                 <label asp-for="Birthdate" class="control-label"></label>
                 <input asp-for="Birthdate" class="form-control" />
@@ -45,70 +47,83 @@
 </form>
 
 <div class="table-responsive text-nowrap">
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Loan.LoanType.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Loan.Customer.Name) 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Loan.Customer.SurName) 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InstallmentNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duedate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InstallmentStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.LoanType.Code)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.Loan.Customer.Name) 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Loan.Customer.SurName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstallmentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duedate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstallmentStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InstallmentId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
-                <!-- <a asp-action="Details" asp-route-id="@item.InstallmentId">Details</a> | -->
-                <!-- <a asp-action="Delete" asp-route-id="@item.InstallmentId">Delete</a> -->
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Loan.LoanType.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Loan.Customer.Name) 
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Loan.Customer.SurName) 
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InstallmentNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duedate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InstallmentStatus)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loan.LoanType.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loan.Customer.Name) 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loan.Customer.SurName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InstallmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duedate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InstallmentStatus)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.InstallmentId"><img src="~/images/edit.svg" alt="Crediflash" class="img-responsive img-sm" style="width:16px;height:16px;" /></a>
+                    <!-- <a asp-action="Details" asp-route-id="@item.InstallmentId">Details</a> | -->
+                    <!-- <a asp-action="Delete" asp-route-id="@item.InstallmentId">Delete</a> -->
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
 </div>
+@{
+    if((bool)@ViewData["DesableCloseCollectionBtn"] == true){
+        @using (Html.BeginForm("MyAction", "Installments", FormMethod.Post))
+        {
+            <input type="button" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza" disabled />
+        }
+    }else{
+        @using (Html.BeginForm("MyAction", "Installments", FormMethod.Post))
+        {
+            <input type="button" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza"  />
+        }
+    }
+}

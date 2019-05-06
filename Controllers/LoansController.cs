@@ -233,12 +233,28 @@ namespace MvcPicashNetCore.Controllers {
         }
 
         private void LoadCombos (Loan Loan) {
-            ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Description");
-            ViewData["CustomerId"] = new SelectList (_context.Customers, "CustomerId", "Name", Loan.CustomerId);
+            ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Code");
+            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
         }
         private void LoadCombos () {
-            ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Description");
-            ViewData["CustomerId"] = new SelectList (_context.Customers, "CustomerId", "Name");
+            ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Code");
+            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name");
+        }
+        private List<object> LoadListForCustomersInCombo()
+        {
+            List<object> customersForCombo = new List<object>();
+            foreach (var customer in _context.Customers)
+            {
+                customersForCombo.Add(
+                    new
+                    {
+                        Id = customer.CustomerId,
+                        Name = customer.Name + " " + customer.SurName
+                    }
+                );
+            }
+
+            return customersForCombo;
         }
         private List<Installment> SimulateAmortization (Loan Loan) {
             /************ aca creo las cuotas para este acuerdo (simulacion debería ser) */
