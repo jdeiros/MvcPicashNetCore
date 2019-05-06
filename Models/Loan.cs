@@ -41,6 +41,7 @@ namespace MvcPicashNetCore.Models
         [Display(Prompt ="Status", Name = "Status")]
         public LoanStatus LoanStatus { get; set; }
 
+        [Display(Prompt ="Tipo de Préstamo", Name = "Tipo de Préstamo")]
         public string LoanTypeId { get; set; }
 
         public LoanType LoanType { get; set; }

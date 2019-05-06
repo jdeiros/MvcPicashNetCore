@@ -120,8 +120,8 @@ namespace MvcPicashNetCore.Models
                new LoanType()
                {
                    LoanTypeId = Guid.NewGuid().ToString(),
-                   Code = "26",
-                   Description = "Lista 26",
+                   Code = "26D40%",
+                   Description = "26 Cuotas diarias, 40% de interés total",
                    InstallmentsAmount = 26,
                    InterestPercentage = 40,
                    CollectionWeekId = collectionWeek.CollectionWeekId
@@ -130,8 +130,8 @@ namespace MvcPicashNetCore.Models
                 new LoanType()
                 {
                     LoanTypeId = Guid.NewGuid().ToString(),
-                    Code = "20",
-                    Description = "Lista 20",
+                    Code = "20D30%",
+                    Description = "20 Cuotas diarias, 30% de interés total",
                     InstallmentsAmount = 20,
                     InterestPercentage = 30,
                     CollectionWeekId = collectionWeek.CollectionWeekId
