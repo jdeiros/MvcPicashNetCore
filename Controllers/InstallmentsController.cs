@@ -51,6 +51,11 @@ namespace MvcPicashNetCore.Controllers
             if (!String.IsNullOrEmpty(routeId))
             {
                 picashDbContext = picashDbContext.Where(s => s.Loan.Customer.RouteId == routeId);
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+            }
+            else
+            {
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
             }
 
             return View(await picashDbContext.ToListAsync());
@@ -121,6 +126,7 @@ namespace MvcPicashNetCore.Controllers
 
             ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
             ViewBag.dateFieldToday = installment.Duedate;
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", installment.Loan.Customer.RouteId);
 
             return View(installment);
         }
@@ -175,13 +181,14 @@ namespace MvcPicashNetCore.Controllers
 
                 ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", installment.Loan.LoanTypeId);
                 ViewBag.dateFieldToday = installment.Duedate;
-
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", installment.Loan.Customer.RouteId);
                 //return RedirectToaction("Installments","Index", routeValues: new { loanTypeId = installment.Loan.LoanTypeId, duedate = installment.Duedate });
                 return RedirectToAction("Index", 
                                         new RouteValueDictionary(
                                                     new { 
                                                             controller = "Installments", 
                                                             action = "Index", 
+                                                            routeId = installment.Loan.Customer.RouteId,
                                                             loanTypeId = installment.Loan.LoanTypeId, 
                                                             duedate = installment.Duedate.ToString("yyyy-MM-dd"), 
                                                             RouteDirection = installment.Loan.Customer.RouteId 
@@ -190,6 +197,7 @@ namespace MvcPicashNetCore.Controllers
 
             }
             ViewData["LoanId"] = new SelectList(_context.Loans, "LoanId", "LoanId", installment.LoanId);
+      
             return View(installment);
         }
 

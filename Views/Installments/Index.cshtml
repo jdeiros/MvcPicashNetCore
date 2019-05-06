@@ -18,9 +18,12 @@
 {
     <fieldset>
         
+        @Html.Label("route", "Ruta:")
+        @Html.DropDownList("routeId", (SelectList) ViewData["RouteId"], "Todos")
+
         @Html.Label("tprestamo", "T. Prestamo:")
         @Html.DropDownList("loanTypeId", (SelectList) ViewData["LoanTypeId"], "Todos")
-       
+
         @Html.Label("fechaVenc", "F. Venc.")
         @Html.TextBox("dueDate", ViewData["dateFieldToday"], new { type = "date" })
 
