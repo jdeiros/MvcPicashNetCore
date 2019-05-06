@@ -114,16 +114,17 @@
         </tbody>
     </table>
 </div>
+
 @{
-    if((bool)@ViewData["DesableCloseCollectionBtn"] == true){
-        @using (Html.BeginForm("MyAction", "Installments", FormMethod.Post))
-        {
-            <input type="button" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza" disabled />
-        }
-    }else{
-        @using (Html.BeginForm("MyAction", "Installments", FormMethod.Post))
-        {
-            <input type="button" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza"  />
+    @using (Html.BeginForm(
+        "Close", "Installments", 
+        new { loanTypeId = ViewData["LoanTypeIdSelected"], dueDate= @ViewData["dateFieldToday"], routeId=@ViewData["RouteIdSelected"] }, 
+        FormMethod.Post))   
+    {
+        if((bool)@ViewData["DesableCloseCollectionBtn"] == true){        
+            <input type="submit" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza" disabled />
+        }else{
+            <input type="submit" name="btnCloseCollection" class="btn btn-primary  float-right" value="Cerrar Cobranza"  />
         }
     }
 }
