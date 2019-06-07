@@ -33,6 +33,7 @@ namespace MvcPicashNetCore.Controllers
             {
                 filteredInstallments = filteredInstallments.Where(s => s.Loan.LoanTypeId == loanTypeId);
                 ViewData["LoanTypeId"] = new SelectList(_context.LoanTypes, "LoanTypeId", "Code", loanTypeId);
+                ViewData["LoanTypeIdSelected"] = loanTypeId;
             }
             else
             {
@@ -52,6 +53,7 @@ namespace MvcPicashNetCore.Controllers
             {
                 filteredInstallments = filteredInstallments.Where(s => s.Loan.Customer.RouteId == routeId);
                 ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+                ViewData["RouteIdSelected"] = routeId;
             }
             else
             {
@@ -63,10 +65,19 @@ namespace MvcPicashNetCore.Controllers
             return View(await filteredInstallments.ToListAsync());
         }
 
-        [HttpPost]
-        public ActionResult MyAction(string button)
+     
+        public ActionResult Close(string loanTypeId, string dueDate, string routeId)
         {
-            return View("TestView");
+            
+            return RedirectToAction("Index", 
+                        new Microsoft.AspNetCore.Routing.RouteValueDictionary(
+                                    new { 
+                                            controller = "Installments", 
+                                            action = "Index", 
+                                            loanTypeId = loanTypeId,
+                                            dueDate = dueDate,
+                                            routeId = routeId 
+                                    }));
         }
 
         // GET: Installments/Details/5

@@ -20,10 +20,27 @@ namespace MvcPicashNetCore.Controllers
         }
 
         // GET: Addresses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string routeId)
         {
-            var picashDbContext = _context.Addresses.Include(p => p.Customer);
-            return View(await picashDbContext.ToListAsync());
+            var adressessFilter = from a in _context.Addresses.Include(a => a.Customer).Include(p => p.Customer.Route) select a;
+
+             if(!String.IsNullOrEmpty(searchString))
+            {
+                //s => s.Name.Contains(searchString) es una expresion Lambda
+                adressessFilter = adressessFilter.Where(s => (s.Customer.Name+" "+s.Customer.SurName).Contains(searchString)); 
+            }
+            if (!String.IsNullOrEmpty(routeId))
+            {
+                adressessFilter = adressessFilter.Where(s => s.Customer.Route.RouteId == routeId);
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+                ViewData["RouteIdSelected"] = routeId;
+            }
+            else
+            {
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
+            }
+
+            return View(await adressessFilter.ToListAsync());
         }
 
         // GET: Addresses/Details/5

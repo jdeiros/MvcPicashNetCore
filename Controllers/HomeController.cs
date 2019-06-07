@@ -12,6 +12,7 @@ namespace MvcPicashNetCore.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Test = "[1,2,3,4]";
             return View();
         }
 
