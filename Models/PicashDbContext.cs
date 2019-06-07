@@ -81,19 +81,35 @@ namespace MvcPicashNetCore.Models
                 Holiday = false
             };
             
-            var holiday = new Holyday()
+            var holidays = new List<Holyday>();
+            
+            holidays.Add( new Holyday()
             {
                 HolydayId = Guid.NewGuid().ToString(),
                 Description = "Día del Trabajador",
                 Date = Convert.ToDateTime("5/1/2019", new CultureInfo("en-US"))
-            };
-
+            });
+            holidays.Add( new Holyday()
+            {
+                HolydayId = Guid.NewGuid().ToString(),
+                Description = "Conmemoración de General Don Martín Miguel de Güemes",
+                Date = Convert.ToDateTime("6/17/2019", new CultureInfo("en-US"))
+            });
+             holidays.Add( new Holyday()
+            {
+                HolydayId = Guid.NewGuid().ToString(),
+                Description = "Paso a la Inmortalidad del General Manuel Belgrano",
+                Date = Convert.ToDateTime("6/20/2019", new CultureInfo("en-US"))
+            });
+            
             List<LoanType> loanTypes = LoadLoanTypes(collectionWeek);
+
+            var filteredDebtCollectors = debtCollectors.Where(x => x.Name == "Gabriel");
             var route = new Route() { 
                                         RouteId = Guid.NewGuid().ToString(), 
-                                        DebtCollectorId = debtCollectors.FirstOrDefault().DebtCollectorId, 
-                                        Code = "ClientesA", 
-                                        Name = "Lista Clientes A" 
+                                        DebtCollectorId = filteredDebtCollectors.FirstOrDefault().DebtCollectorId, 
+                                        Code = "ClientesGabriel", 
+                                        Name = "Lista Clientes Gabriel" 
                                     };
             
             List<Customer> customers = GenerateRandomCustomers(route, 50);
@@ -102,7 +118,7 @@ namespace MvcPicashNetCore.Models
 
 
             modelBuilder.Entity<CollectionWeek>().HasData(collectionWeek);
-            modelBuilder.Entity<Holyday>().HasData(holiday);
+            modelBuilder.Entity<Holyday>().HasData(holidays.ToArray());
 
             modelBuilder.Entity<Zone>().HasData(zones.ToArray());
             modelBuilder.Entity<DebtCollector>().HasData(debtCollectors.ToArray());
@@ -120,7 +136,7 @@ namespace MvcPicashNetCore.Models
                new LoanType()
                {
                    LoanTypeId = Guid.NewGuid().ToString(),
-                   Code = "26D40%",
+                   Code = "26D40P",
                    Description = "26 Cuotas diarias, 40% de interés total",
                    InstallmentsAmount = 26,
                    InterestPercentage = 40,
@@ -130,7 +146,7 @@ namespace MvcPicashNetCore.Models
                 new LoanType()
                 {
                     LoanTypeId = Guid.NewGuid().ToString(),
-                    Code = "20D30%",
+                    Code = "20D30P",
                     Description = "20 Cuotas diarias, 30% de interés total",
                     InstallmentsAmount = 20,
                     InterestPercentage = 30,

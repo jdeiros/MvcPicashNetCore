@@ -10,12 +10,25 @@
     <a asp-action="Create">Crear Nuevo Cliente.</a>
 </p>
 
-<form asp-controller="Customers" asp-action="Index" method="get">
-    <p>
-        Nombre: <input type="text" name="SearchString">
-        <input type="submit" value="Filter" />
-    </p>
-</form>
+
+@using(Html.BeginForm(null, null, FormMethod.Get))
+{
+    <fieldset>
+        
+        @Html.Label("route", "Ruta:")
+        @Html.DropDownList("routeId", (SelectList) ViewData["RouteId"], "Todos")
+
+        @Html.Label("Nombre", "Nombre")
+        @Html.TextBox("SearchString", ViewData["SearchString"], new { type = "text" })
+
+        <!-- @Html.Label("maxHijos", "Hijos máx:")
+        @Html.TextBox("maxHijos" ) -->
+ 
+        <input type="image" value="Buscar"  src="~/images/search.svg" alt="Crediflash" class="img-responsive img-sm" style="width:26px;height:26px;"/>
+    </fieldset>
+}
+
+
 <div class="table-responsive text-nowrap">
 <table class="table">
     <thead>

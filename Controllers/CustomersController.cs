@@ -24,7 +24,7 @@ namespace MvcPicashNetCore.Controllers
             return "From [HttpPost]Index: filter on " + searchString;
         }
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string routeId)
         {
             //(from c in _context.Customers select c) es una consulta LinQ
             var customers = from c in _context.Customers.Include(p => p.Route).Include(a => a.Addresses) select c;
@@ -32,7 +32,17 @@ namespace MvcPicashNetCore.Controllers
             if(!String.IsNullOrEmpty(searchString))
             {
                 //s => s.Name.Contains(searchString) es una expresion Lambda
-                customers = customers.Where(s => s.Name.Contains(searchString)); 
+                customers = customers.Where(s => (s.Name+" "+s.SurName).Contains(searchString)); 
+            }
+            if (!String.IsNullOrEmpty(routeId))
+            {
+                customers = customers.Where(s => s.RouteId == routeId);
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+                ViewData["RouteIdSelected"] = routeId;
+            }
+            else
+            {
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
             }
 
             return View(await customers.ToListAsync());
