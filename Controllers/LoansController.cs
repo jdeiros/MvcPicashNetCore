@@ -19,10 +19,27 @@ namespace MvcPicashNetCore.Controllers {
         }
 
         // GET: Loans
-        public async Task<IActionResult> Index () {
-            var picashDbContext = _context.Loans.Include (p => p.Customer).Include (p => p.LoanType);
+        public async Task<IActionResult> Index (string searchString, string routeId) {
+            var loansFilter = from l in _context.Loans.Include(p => p.LoanType).Include(l => l.Customer).Include(l => l.Customer.Route) select l;
+            //_context.Loans.Include (p => p.Customer).Include (p => p.LoanType);
 
-            return View (await picashDbContext.ToListAsync ());
+             if(!String.IsNullOrEmpty(searchString))
+            {
+                //s => s.Name.Contains(searchString) es una expresion Lambda
+                loansFilter = loansFilter.Where(s => (s.Customer.Name+" "+s.Customer.SurName).Contains(searchString)); 
+            }
+            if (!String.IsNullOrEmpty(routeId))
+            {
+                loansFilter = loansFilter.Where(s => s.Customer.Route.RouteId == routeId);
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+                ViewData["RouteIdSelected"] = routeId;
+            }
+            else
+            {
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
+            }
+
+            return View (await loansFilter.ToListAsync ());
         }
 
         // GET: Loans/Details/5
@@ -75,8 +92,22 @@ namespace MvcPicashNetCore.Controllers {
             //return View (Loan);
         }
         // GET: Loans/Create
-        public IActionResult Create () {
+        public IActionResult Create (string routeId) {
+            var customersfiltered = from a in _context.Customers.Include(p => p.Route) select a;
+            if (!String.IsNullOrEmpty(routeId))
+            {
+                customersfiltered = customersfiltered.Where(s => s.Route.RouteId == routeId);
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code", routeId);
+                ViewData["RouteIdSelected"] = routeId;
+                ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(routeId), "Id", "Name");
+            }
+            else
+            {
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code");
+                ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name");
+            }
             LoadCombos ();
+            
             return View ();
         }
 
@@ -96,12 +127,14 @@ namespace MvcPicashNetCore.Controllers {
 
                 /****************** */
                 LoadCombos (Loan);
+                ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
                 return View ("Create", Loan);
                 /********************* */
 
                 // return RedirectToAction(nameof(Index));
             }
             LoadCombos (Loan);
+            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
             return View ("Create", Loan);
         }
 
@@ -119,6 +152,7 @@ namespace MvcPicashNetCore.Controllers {
             Loan.DateFrom = GetNextInstallmentDueDate (DateTime.Today, Loan.LoanType);
             //Loan.DateTo = DateTime.Today.AddDays (Loan.LoanType.InstallmentsAmount);
             Loan.LoanStatus = LoanStatus.Created;
+            Loan.Customer = _context.Customers.Where(c => c.CustomerId == Loan.CustomerId).FirstOrDefault();
 
             if (ModelState.IsValid) {
                 try {
@@ -147,14 +181,16 @@ namespace MvcPicashNetCore.Controllers {
 
                 /****************** */
                 LoadCombos (Loan);
-
+                ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code",Loan.Customer.RouteId);
+                ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
                 return View (Loan);
                 /********************* */
 
                 // return RedirectToAction(nameof(Index));
             }
             LoadCombos (Loan);
-
+            ViewData["RouteId"] = new SelectList(_context.Routes, "RouteId", "Code",Loan.Customer.RouteId);
+            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
             return View (Loan);
         }
 
@@ -234,16 +270,34 @@ namespace MvcPicashNetCore.Controllers {
 
         private void LoadCombos (Loan Loan) {
             ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Code");
-            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name", Loan.CustomerId);
+            
         }
         private void LoadCombos () {
             ViewData["LoanTypeId"] = new SelectList (_context.LoanTypes, "LoanTypeId", "Code");
-            ViewData["CustomerId"] = new SelectList (LoadListForCustomersInCombo(), "Id", "Name");
+            
         }
         private List<object> LoadListForCustomersInCombo()
         {
             List<object> customersForCombo = new List<object>();
             foreach (var customer in _context.Customers)
+            {
+                customersForCombo.Add(
+                    new
+                    {
+                        Id = customer.CustomerId,
+                        Name = customer.Name + " " + customer.SurName
+                    }
+                );
+            }
+
+            return customersForCombo;
+        }
+
+        private List<object> LoadListForCustomersInCombo(string routeId)
+        {
+            List<object> customersForCombo = new List<object>();
+            var customersfiltered = from a in _context.Customers.Include(p => p.Route) select a;
+            foreach (var customer in customersfiltered.Where(c => c.RouteId == routeId))
             {
                 customersForCombo.Add(
                     new

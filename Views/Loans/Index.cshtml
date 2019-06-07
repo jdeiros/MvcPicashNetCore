@@ -9,6 +9,21 @@
 <p>
     <a asp-action="Create">Crear Préstamo</a>
 </p>
+
+@using(Html.BeginForm(null, null, FormMethod.Get))
+{
+    <fieldset>
+        
+        @Html.Label("route", "Ruta:")
+        @Html.DropDownList("routeId", (SelectList) ViewData["RouteId"], "Todos")
+
+        @Html.Label("Nombre", "Nombre")
+        @Html.TextBox("SearchString", ViewData["SearchString"], new { type = "text" })
+ 
+        <input type="image" value="Buscar"  src="~/images/search.svg" alt="Crediflash" class="img-responsive img-sm" style="width:26px;height:26px;"/>
+    </fieldset>
+}
+
 <div class="table-responsive text-nowrap">
 <table class="table">
     <thead>

@@ -6,6 +6,14 @@
 
 
             <legend>Crear Préstamo</legend>
+            @using(Html.BeginForm(null, null, FormMethod.Get))
+            {
+                <fieldset>
+                    @Html.Label("route", "Ruta:")
+                    @Html.DropDownList("routeId", (SelectList) ViewData["RouteId"], "Todos")
+                   <input type="image" value="Buscar"  src="~/images/search.svg" alt="Crediflash" class="img-responsive img-sm" style="width:26px;height:26px;"/>
+                </fieldset>
+            }
 
 <hr />
 
@@ -23,6 +31,9 @@
                             <span asp-validation-for="TotalAmmount" class="text-danger"></span>
                         </div>
                     </div>
+
+                   
+
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="CustomerId" class="control-label"></label>
@@ -45,12 +56,6 @@
                 </div>
             
         </form>
-
-        <!-- <form asp-controller="Loans" asp-action="Simulate" method="get">
-            <div class="form-group">
-                <a class="btn btn-warning" asp-action="Simulation">Simular</a>
-            </div>
-        </form> -->
         
     </div>
 
